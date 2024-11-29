@@ -9,10 +9,14 @@
         </div>
         <div class="col-12 col-md-6 d-flex flex-column justify-content-center align-items-center">
             <div class="border rounded bg-white w-75 shadow p-3 mx-md-5">     
-                
-                <form method="post" action="#" class="needs-validation" novalidate>
+                @if(session('error'))
+                    <div class="alert alert-danger">
+                        {{ session('error') }}
+                    </div>
+                @endif
+                <form method="post" action="{{url('process_login')}}" class="needs-validation" novalidate>
                     @csrf               
-                    <x-floating-input type="text" name="username" label="Username"/>
+                    <x-floating-input type="text" name="email" label="Email"/>
                     <x-floating-input type="password" name="password" label="Password"/>
 
                        <!-- Forgot Password and Show Password -->
@@ -30,7 +34,7 @@
                         </small>
                         <code>/</code>
                         <small>
-                            <a href="#" class="text-decoration-none text-primary">Sign Up Here</a>
+                            <a href="{{url('register')}}" class="text-decoration-none text-primary">Sign Up Here</a>
                         </small>
                     </div>  
                 </form>

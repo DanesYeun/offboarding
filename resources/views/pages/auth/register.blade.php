@@ -9,15 +9,18 @@
         </div>
         <div class="col-12 col-md-6 d-flex flex-column justify-content-center align-items-center">
             <div class="border rounded bg-white w-75 shadow p-3 mx-md-5">     
-                <x-alert response="error" color="danger"/>
-                <x-alert response="success" color="success"/>
-                
-                <form method="post" action="#" class="needs-validation" novalidate>
+                @if(session('success'))
+                <div class="alert alert-success">{{ session('success') }}</div>
+                @endif
+                @if(session('error'))
+                    <div class="alert alert-danger">{{ session('error') }}</div>
+                @endif
+                <form method="post" action="{{route('process_register')}}" class="needs-validation" novalidate>
                     @csrf               
                         <x-input type="text" name="name" label="Name" mdSize="12"/>
                         <x-input type="text" name="username" label="Username" mdSize="12"/>
                         <x-input type="email" name="email" label="Email" mdSize="12"/>
-                        <x-input type="password" name="name" label="Password" mdSize="12"/>
+                        <x-input type="password" name="password" label="Password" mdSize="12"/>
 
                        <!-- Forgot Password and Show Password -->
                         <div class="text-primary text-start mb-2">
@@ -31,7 +34,7 @@
                     <div class="mt-2">
                         <code>Already have an account?</code>
                         <small>
-                            <a href="#" class="text-decoration-none text-primary">Sign Up Here</a>
+                            <a href="/" class="text-decoration-none text-primary">Sign In Here</a>
                         </small>
                     </div>  
                 </form>
