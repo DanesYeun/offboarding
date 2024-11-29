@@ -5,12 +5,31 @@
     <ul class="nav flex-column">
         <!-- For HR -->
         <li class="nav-item py-1">
-            <a class="nav-link bg-light rounded" href="#">
+            <a class="nav-link bg-primary text-white rounded" href="#">
                 <i class="bi bi-people-fill p-2"></i>
                 Users
             </a>
         </li>
+        <li class="nav-item py-1">
+            <a class="nav-link bg-light rounded" href="#">
+                <i class="bi bi-file-earmark-fill p-2"></i>
+                Manage Clearance
+            </a>
+        </li>
+        <li class="nav-item py-1">
+            <a class="nav-link bg-light rounded" href="#">
+                <i class="bi bi-question-circle-fill p-2"></i>
+                Questionnaire
+            </a>
+        </li>
+        <li class="nav-item py-1">
+            <a class="nav-link bg-light rounded" href="#">
+                <i class="bi bi-award-fill p-2"></i>
+                Generate COE
+            </a>
+        </li>
         <!-- For HR -->
+
         <!-- For Clearing officer -->
         <li class="nav-item py-1">
             <a class="nav-link bg-light rounded" href="#">

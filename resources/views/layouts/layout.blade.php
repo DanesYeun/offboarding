@@ -11,6 +11,10 @@
         <link href="https://fonts.googleapis.com/css2?family=Noto+Sans:wght@400;700&display=swap" rel="stylesheet">
 
         <!-- Styles / Scripts -->
+
+        <!-- custom accordion css -->
+        <link rel="stylesheet" href="{{ asset('css/accordion.css') }}">
+        
         <!-- Bootstrap CSS -->
         <link href="{{ asset('bootstrap-5.3.3-dist/css/bootstrap.css') }}" rel="stylesheet">
 
