@@ -4,7 +4,7 @@ use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\LoginController;
 use App\Http\Controllers\RegisterController;
 use App\Http\Controllers\AuthController;
-use App\Http\Controllers\UsersController;
+use App\Http\Controllers\UserController;
 
 
 //login
@@ -18,7 +18,7 @@ Route::post('process_login', [AuthController::class, 'proccess_login']);
 Route::get('home',[AuthController::class, 'home'])->name('home')->middleware('auth')->middleware('can:access-home');
 Route::get('official',[AuthController::class, 'official_dashboard'])->name('official_dashboard')->middleware('auth')->middleware('can:access-official');
 
-Route::get('users',[UsersController::class, 'index'])->name('users');
+Route::get('users',[UserController::class, 'index'])->name('users');
 
 Route::post('logout', [AuthController::class, 'logout'])->name('logout');
 
