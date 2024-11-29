@@ -8,22 +8,22 @@
         <table id="clearance-requests-table" class="display table table-hover table-striped table-borderless data-table">
             <thead class="rounded-top">
                 <tr>
-                    <th scope="col" class="p-3 rounded-start bg-primary text-white">Requested By</th>
+                    <th scope="col" class="p-3 bg-primary text-white">Requested By</th>
                     <th scope="col" class="p-3 bg-primary text-white">Clearance</th>
                     <th scope="col" class="p-3 bg-primary text-white">Subject</th>
                     <th scope="col" class="p-3 bg-primary text-white">Date Requested</th>
                     <th scope="col" class="p-3 bg-primary text-white">Status</th>
-                    <th scope="col" class="p-3 rounded-end bg-primary text-white">&nbsp;</th>
+                    <th scope="col" class="p-3 bg-primary text-white">&nbsp;</th>
                 </tr>
             </thead>
             <tbody id="tableBody">
                 @foreach($datas as $data)
                     <tr>
-                        <td class="p-3 rounded-start">{{ $data->id }}</td>
+                        <td class="p-3">{{ $data->id }}</td>
                         <td class="p-3">{{ $data->firstname }} {{ $data->lastname }}</td>
                         <td class="p-3 d-none d-sm-table-cell">{{ $data->role_relation->description }}</td>
                         <td class="p-3"><small class="badge rounded-pill text-bg-success">{{ $data->status ? 'Active' : '' }}</small></td>
-                        <td class="p-3 rounded-end">
+                        <td class="p-3">
                             <a class="btn btn-sm btn-secondary text-white" href="{{ route('users.details', ['id' => $data->id]) }}">
                                 <i class="bi bi-pencil-square"></i>
                             </a>

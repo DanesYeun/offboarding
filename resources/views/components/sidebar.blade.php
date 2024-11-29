@@ -3,6 +3,14 @@
         LOGO HERE
     </div>
     <ul class="nav flex-column">
+        <!-- For HR -->
+        <li class="nav-item py-1">
+            <a class="nav-link bg-light rounded" href="#">
+                <i class="bi bi-people-fill p-2"></i>
+                Users
+            </a>
+        </li>
+        <!-- For HR -->
         <!-- For Clearing officer -->
         <li class="nav-item py-1">
             <a class="nav-link bg-light rounded" href="#">
@@ -26,7 +34,15 @@
                 Request Clearance
             </a>
         </li>
+
+        <li class="nav-item py-1">
+            <a class="nav-link bg-light rounded" href="#">
+                <i class="bi bi-award-fill p-2"></i>
+                COE
+            </a>
+        </li>
         <!-- For employee -->
+
         <li class="nav-item py-1">
             <a class="nav-link text-danger" href="/logout" onclick="event.preventDefault(); document.getElementById('logout-form').submit();">         
                 <i class="bi bi-door-closed fs-5 p-2"></i> 
