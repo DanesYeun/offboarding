@@ -18,16 +18,25 @@
                     <x-input name="name" label="Name" type="text"/>
                     @php
                         $roles = [['id' => 1, 'name' => 'Human Resource']];
-                    @endphp           
-                    <x-select name="role" label="Role" :options="$roles" required="true"/>
-                    <x-input name="emailaddress" label="Email" type="email" required="true"/> 
-
-                    @php
                         $subroles = [['id' => 1, 'name' => 'Dragon']];
+                        $isEmailUsed = false;
                     @endphp           
-                    <x-select name="subrole" label="Sub Role" :options="$subroles" required="true"/>
-                    
-
+                    <x-select name="role" label="Role" :options="$roles" required="true" sizeMd="3"/>      
+                    <x-select name="subrole" label="Sub Role" :options="$subroles" required="true" sizeMd="3"/>
+                    <x-input name="emailaddress" label="Email" type="email" required="true"/> 
+                    <div class="col-md-6 col-12 d-flex align-items-center pt-md-3">
+                        @if ($isEmailUsed == "true")
+                            <span class="badge text-white rounded-pill text-bg-danger px-2">
+                                <i class="bi bi-exclamation-circle-fill"></i>
+                                Email is already used!
+                            </span>
+                        @else
+                            <span class="badge text-white rounded-pill text-bg-success px-2">
+                                <i class="bi bi-check-circle-fill"></i>
+                                Email can be used!
+                            </span>
+                        @endif
+                    </div>
                     <x-input name="password" label="Password" type="password"/>
                     <x-input name="password_confirmation" label="Confirm Password" type="password"/>
 
