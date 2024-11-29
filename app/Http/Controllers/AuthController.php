@@ -12,7 +12,6 @@ class AuthController extends Controller
 {
 
     public function proccess_login(Request $request){
-        
       try{
      $request->validate([
             'email' => 'required|string',
@@ -20,7 +19,7 @@ class AuthController extends Controller
         ]);
 
          if (Auth::attempt(['email' => $request->email, 'password' => $request->password])) {
-
+    
             $user = Auth::user();
 
         //  dd($user);
@@ -31,7 +30,7 @@ class AuthController extends Controller
                
             // }
             switch($user->role_id){
-                case 1:   return  redirect()->intended(route('hr_dashboard'));
+                case 1:   return  redirect()->intended(route('users'));
                 break;
                 case 2:   return  redirect()->intended(route('official_dashboard'));
                 break;
@@ -42,9 +41,9 @@ class AuthController extends Controller
            
           
         }
-
-    }catch(\Exception $e){
         return redirect()->back()->with('error', 'Invalid credentials');
+    }catch(\Exception $e){
+        return redirect()->back()->with('error', $e->getMessage());
     }
 
        
