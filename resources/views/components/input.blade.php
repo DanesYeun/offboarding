@@ -15,6 +15,8 @@
 ])
 
 <div class="col-12 col-md-{{ $mdSize }} mb-2">
+    <label for="{{ $name }}" class="px-2 d-flex justify-content-start text-primary">{{ $label }}</label>
+    
     <input 
         type="{{ $type }}" 
         class="form-control" 
@@ -30,8 +32,6 @@
         @if($max !== null) max="{{ $max }}" @endif
         @if($pattern) pattern="{{ $pattern }}" @endif
     >
-
-    <small for="{{ $name }}" class="px-2 d-flex justify-content-start text-primary">{{ $label }}</small>
 
     <div class="invalid-feedback text-start">
         <i class="bi bi-exclamation-circle-fill"></i>
