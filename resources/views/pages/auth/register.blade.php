@@ -3,7 +3,7 @@
 @section('content')
     <div class="row m-0 w-100 h-100">
         <div class="col-12 col-md-6 row m-0 d-flex align-items-center">
-            <div><h1 class="text-primary">Welcome</h1>
+            <div><h1 class="text-primary">Register</h1>
                 <span >A Web based Employee Off Boarding Clearance.</span>
             </div>    
         </div>
@@ -14,8 +14,10 @@
                 
                 <form method="post" action="#" class="needs-validation" novalidate>
                     @csrf               
-                    <x-floating-input type="text" name="username" label="Username"/>
-                    <x-floating-input type="password" name="password" label="Password"/>
+                        <x-input type="text" name="name" label="Name" mdSize="12"/>
+                        <x-input type="text" name="username" label="Username" mdSize="12"/>
+                        <x-input type="email" name="email" label="Email" mdSize="12"/>
+                        <x-input type="password" name="name" label="Password" mdSize="12"/>
 
                        <!-- Forgot Password and Show Password -->
                         <div class="text-primary text-start mb-2">
@@ -24,15 +26,12 @@
                         </div>
 
                     <div class="d-grid">
-                        <button type="submit" class="btn btn-lg btn-outline-primary">Login</button>
+                        <button type="submit" class="btn btn-lg btn-outline-primary">Register</button>
                     </div>
                     <div class="mt-2">
+                        <code>Already have an account?</code>
                         <small>
-                            <a href="#" class="text-decoration-none text-primary">Forgot Password?</a>
-                        </small>
-                        <code>/</code>
-                        <small>
-                            <a href="{{ route('register') }}" class="text-decoration-none text-primary">Sign Up Here</a>
+                            <a href="#" class="text-decoration-none text-primary">Sign Up Here</a>
                         </small>
                     </div>  
                 </form>
