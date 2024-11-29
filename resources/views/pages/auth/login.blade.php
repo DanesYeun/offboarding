@@ -9,8 +9,6 @@
         </div>
         <div class="col-12 col-md-6 d-flex flex-column justify-content-center align-items-center">
             <div class="border rounded bg-white w-75 shadow p-3 mx-md-5">     
-                <x-alert response="error" color="danger"/>
-                <x-alert response="success" color="success"/>
                 
                 <form method="post" action="#" class="needs-validation" novalidate>
                     @csrf               
@@ -32,7 +30,7 @@
                         </small>
                         <code>/</code>
                         <small>
-                            <a href="{{ route('register') }}" class="text-decoration-none text-primary">Sign Up Here</a>
+                            <a href="#" class="text-decoration-none text-primary">Sign Up Here</a>
                         </small>
                     </div>  
                 </form>
