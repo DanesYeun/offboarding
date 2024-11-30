@@ -36,49 +36,54 @@
 
                 <div id="collapseOne" class="accordion-collapse collapse" data-bs-parent="#accordionExample">
                     <div class="accordion-body">
-                        <form method="post" id="clearance-form" action="{{route('clearance.store')}}"  class="needs-validation" novalidate>
-                            @csrf
-                            <div class="container row">
-                                <h4 class="py-2 text-primary text-start">Clearance Form</h4>
-                                
-                                <x-select name="employment_type" label="Type Of Clearance" :options="$employment_types" required="true" sizeMd="6" />
+                        @if($employment_types && count($employment_types) > 0)
+                            <form method="post" id="clearance-form" action="{{route('clearance.store')}}"  class="needs-validation" novalidate>
+                                @csrf
+                                <div class="container row">
+                                    <h4 class="py-2 text-primary text-start">Clearance Form</h4>
+                                    
+                                    <x-select name="employment_type" label="Type Of Clearance" :options="$employment_types" required="true" sizeMd="6" />
 
-                                <x-input name="statement" label="Statement" type="text" mdSize="6" required="true"/>
-                                
-                                {{-- <x-textarea name="statement" label="Statement" /> --}}
+                                    <x-input name="statement" label="Statement" type="text" mdSize="6" required="true"/>
+                                    
+                                    {{-- <x-textarea name="statement" label="Statement" /> --}}
 
-                        
-                                <h5 class="py-2 text-primary text-start">Add Clearing Officials</h5>
-                        
-                                {{-- Clearing Officials Table --}}
-                                <div class="table-responsive">
-                                    <table class="table table-bordered" id="clearing_officials_table">
-                                        <thead>
-                                            <tr>
-                                                <th>SeqNo</th>
-                                                <th>Title</th>
-                                                <th>Clearing Official</th>
-                                                <th>Actions</th>
-                                            </tr>
-                                        </thead>
-                                        <tbody>
+                            
+                                    <h5 class="py-2 text-primary text-start">Add Clearing Officials</h5>
+                            
+                                    {{-- Clearing Officials Table --}}
+                                    <div class="table-responsive">
+                                        <table class="table table-bordered" id="clearing_officials_table">
+                                            <thead>
+                                                <tr>
+                                                    <th>SeqNo</th>
+                                                    <th>Title</th>
+                                                    <th>Clearing Official</th>
+                                                    <th>Actions</th>
+                                                </tr>
+                                            </thead>
+                                            <tbody>
 
-                                        </tbody>
-                                    </table>
-                                    <button type="button" id="add-row" class="btn btn-primary btn-sm">
-                                        <i class="bi bi-plus-circle-fill"></i> Add Row
-                                    </button>
+                                            </tbody>
+                                        </table>
+                                        <button type="button" id="add-row" class="btn btn-primary btn-sm">
+                                            <i class="bi bi-plus-circle-fill"></i> Add Row
+                                        </button>
+                                    </div>
+                            
+                                    {{-- Submit Button --}}
+                                    <div class="d-flex justify-content-end mt-3">
+                                        <button type="submit" class="btn btn-success">
+                                            <i class="bi bi-floppy-fill p-2"></i> Save
+                                        </button>
+                                    </div>
                                 </div>
-                        
-                                {{-- Submit Button --}}
-                                <div class="d-flex justify-content-end mt-3">
-                                    <button type="submit" class="btn btn-success">
-                                        <i class="bi bi-floppy-fill p-2"></i> Save
-                                    </button>
-                                </div>
+                            </form>
+                        @else
+                            <div class="alert alert-warning" role="alert">
+                                No clearance type available.
                             </div>
-                        </form>
-                        
+                        @endif
                   
                     </div>
                 </div>
