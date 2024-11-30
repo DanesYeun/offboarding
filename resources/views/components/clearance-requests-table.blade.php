@@ -2,7 +2,7 @@
 <div class="container mt-2 table-container p-2">   
     <div class="mb-1 d-flex justify-content-between">
         <h5 class="p-1 text-secondary">{{ $label }}</h5>
-        <input type="text" id="searchInput" class="form-control w-25" placeholder="Search...">  
+        <input type="text" id="searchInput" class="form-control w-25" placeholder="Search...">
     </div>
     <div class="table-responsive">
         <table id="clearance-requests-table" class="display table table-hover table-striped table-borderless data-table">
@@ -10,32 +10,84 @@
                 <tr>
                     <th scope="col" class="p-3 bg-primary text-white">Requested By</th>
                     <th scope="col" class="p-3 bg-primary text-white">Clearance</th>
-                    <th scope="col" class="p-3 bg-primary text-white">Subject</th>
+                    <th scope="col" class="p-3 bg-primary text-white">Purpose</th>
                     <th scope="col" class="p-3 bg-primary text-white">Date Requested</th>
                     <th scope="col" class="p-3 bg-primary text-white">Status</th>
-                    <th scope="col" class="p-3 bg-primary text-white">&nbsp;</th>
+                    <th scope="col" class="p-3 bg-primary text-white">Action</th>
                 </tr>
             </thead>
             <tbody id="tableBody">
                 @foreach($datas as $data)
                     <tr>
-                        <td class="p-3">{{ $data->id }}</td>
-                        <td class="p-3">{{ $data->firstname }} {{ $data->lastname }}</td>
-                        <td class="p-3 d-none d-sm-table-cell">{{ $data->role_relation->description }}</td>
-                        <td class="p-3"><small class="badge rounded-pill text-bg-success">{{ $data->status ? 'Active' : '' }}</small></td>
+                        <td class="p-3">{{ $data->firstname }} {{ $data->user->name }}</td>
+                        <td class="p-3 d-none d-sm-table-cell">{{ $data->employmentType->description }}</td>
+                        <td class="p-3 d-none d-sm-table-cell">{{ $data->clearance_purpose->description }}</td>
+                        <td class="p-3 d-none d-sm-table-cell">{{ \Carbon\Carbon::parse($data->created_at)->toFormattedDateString() }}</td>
                         <td class="p-3">
-                            <a class="btn btn-sm btn-secondary text-white" href="{{ route('users.details', ['id' => $data->id]) }}">
-                                <i class="bi bi-pencil-square"></i>
-                            </a>
-                            <form action="{{ route('users.disable', ['id' => $data->id]) }}" method="POST" style="display: inline;">
-                                @csrf
-                                <button type="submit" class="btn btn-sm btn-danger my-2">
-                                    <i class="bi bi-exclamation-circle"></i>
-                                    <span class="d-none d-sm-inline">Disable</span>
-                                </button>
-                            </form>
+                            <small class="badge rounded-pill text-bg-success">{{ $data->statusDesc->description }}</small>
+                        </td>
+                        <td class="p-3">
+                            <button type="button" class="btn btn-sm btn-secondary text-white" data-bs-toggle="modal" data-bs-target="#viewModal{{ $data->id }}">
+                                <i class="bi bi-eye text-primary"></i> 
+                            </button>
                         </td>
                     </tr>
+
+                    <!-- Modal for this particular clearance request -->
+                    <div class="modal fade" id="viewModal{{ $data->id }}" tabindex="-1" aria-labelledby="viewModalLabel{{ $data->id }}" aria-hidden="true">
+                        <div class="modal-dialog modal-lg">
+                            <div class="modal-content">
+                                <div class="modal-header">
+                                    <h5 class="modal-title" id="viewModalLabel{{ $data->id }}">Clearance Request Details</h5>
+                                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                                </div>
+                                <div class="modal-body">
+                                    <div class="row">
+                                        <x-input type="text" name="requestedBy" label="Requested By" class="form-control" value="{{ $data->firstname }} {{ $data->user->name }}" readOnly="true" />
+                                        <x-input type="text" name="clearanceType" label="Clearance Type" class="form-control" value="{{ $data->employmentType->description }}" readOnly="true"/>
+                                        <x-input type="text" name="purpose" label="Purpose" class="form-control" value="{{ $data->clearance_purpose->description }}" readOnly="true"/>
+                                        <x-input type="text" name="dateRequested" label="Date Requested" class="form-control" value="{{ \Carbon\Carbon::parse($data->created_at)->toFormattedDateString() }}" readOnly="true"/>
+                                        <x-input type="text" name="status" label="Status" class="form-control" value="{{ $data->statusDesc->description }}" readOnly="true"/>
+                                        
+                                        <div class="col-md-6 mb-3 mt-4">
+                                            <div class="input-group">
+                                                @if($data->attachment_file_path)
+                                                    <input type="text" class="form-control" id="attachment" value="{{ basename($data->attachment_file_path) }}" readonly>
+                                                    <div class="input-group-append">
+                                                        <a href="{{ asset('storage/' . $data->attachment_file_path) }}" target="_blank" class="btn btn-outline-primary">
+                                                            View File
+                                                        </a>
+                                                    </div>
+                                                @else
+                                                    <input type="text" class="form-control" id="attachment" value="No attachment available" readonly>
+                                                @endif
+                                            </div>
+                                        </div>
+                                    </div>
+                        
+                                </div>
+                                <div class="modal-footer">
+                                    <!-- Approve Button -->
+                                    <form action="{{ route('request.status', ['id' => $data->id]) }}" method="POST" style="display: inline;">
+                                        @csrf
+                                        <input type="hidden" name="status" value="approved">
+                                        <button type="submit" class="btn btn-sm btn-success my-2">
+                                            <span class="d-none d-sm-inline">Approve</span>
+                                        </button>
+                                    </form>
+
+                                    <!-- Disapprove Button -->
+                                    <form action="{{ route('request.status', ['id' => $data->id]) }}" method="POST" style="display: inline;">
+                                        @csrf
+                                        <input type="hidden" name="status" value="disapproved">
+                                        <button type="submit" class="btn btn-sm btn-danger my-2">
+                                            <span class="d-none d-sm-inline">Disapprove</span>
+                                        </button>
+                                    </form>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
                 @endforeach
             </tbody>
         </table>

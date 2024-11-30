@@ -5,6 +5,9 @@ namespace App\Providers;
 // use Illuminate\Support\ServiceProvider;
 use Illuminate\Foundation\Support\Providers\AuthServiceProvider as ServiceProvider;
 use Illuminate\Support\Facades\Gate;
+use Illuminate\Support\Facades\View;
+
+use App\Models\ClearanceRequest;
 
 class AppServiceProvider extends ServiceProvider
 {
@@ -31,6 +34,11 @@ class AppServiceProvider extends ServiceProvider
 
         Gate::define('access-home', function ($user) {
             return $user->role_id === 3;
+        });
+
+        View::composer('*', function ($view) {
+            $count_new_requests = ClearanceRequest::where('status', 1)->count();
+            $view->with('count_new_requests', $count_new_requests);
         });
     }
 }

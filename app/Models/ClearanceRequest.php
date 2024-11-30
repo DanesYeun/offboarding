@@ -24,4 +24,9 @@ class ClearanceRequest extends Model
     {
         return $this->belongsTo(ClearancePurpose::class, 'purpose');
     }
+
+    public function statusDesc()
+    {
+        return $this->belongsTo(Status::class, 'status');
+    }
 }

@@ -44,7 +44,7 @@ class UserController extends Controller
         $validator = Validator::make($request->all(), [
             'name' => 'required|string|max:255',
             'role' => 'required|exists:roles,id',
-            'subrole' => 'required|exists:sub_roles,id',
+            'subrole' => 'nullable|exists:sub_roles,id',
             'emailaddress' => 'required|email|unique:users,email|max:255'
         ]);
 
@@ -58,7 +58,7 @@ class UserController extends Controller
             'email' => $request->emailaddress,
             'password' => Hash::make($randomPassword),
             'role_id' => $request->role,
-            'sub_role' => $request->subrole,
+            'sub_role' => $request->subrole ?? null,
             'status' => 1
             
         ]);

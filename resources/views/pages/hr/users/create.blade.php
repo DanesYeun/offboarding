@@ -15,9 +15,9 @@
                 <div class="border container bg-white rounded row mx-0 p-3">
                     <h4 class="py-2 text-primary text-start">User Information</h4>
 
-                    @if(session('error'))
+                    @if(session('success'))
                         <x-toast :message="session('success')" :type="'success'" :icon="'bi-check-circle-fill'" />
-                    @elseif(session('success'))
+                    @elseif(session('error'))
                         <x-toast :message="session('error')" :type="'danger'" :icon="'bi-exclamation-circle-fill'" />
                     @endif
 
@@ -26,7 +26,7 @@
                         $isEmailUsed = false;
                     @endphp            --}}
                     <x-select name="role" label="Role" :options="$roles" required="true" sizeMd="3"/>      
-                    <x-select name="subrole" label="Sub Role" :options="$subroles" required="true" sizeMd="3"/>
+                    <x-select name="subrole" label="Sub Role" :options="$subroles" sizeMd="3"/>
                     <x-input name="emailaddress" label="Email" type="email" required="true"/> 
                     {{-- <div class="col-md-6 col-12 d-flex align-items-center pt-md-3">
                         @if ($isEmailUsed == "true")

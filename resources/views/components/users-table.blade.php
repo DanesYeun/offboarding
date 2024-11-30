@@ -26,7 +26,7 @@
                         <td class="p-3">{{ $data->id }}</td>
                         <td class="p-3">{{ $data->name }}</td>
                         <td class="p-3 d-none d-sm-table-cell">{{ $data->role->name }}</td>
-                        <td class="p-3 d-none d-sm-table-cell">{{ $data->subrole->description }}</td>
+                        <td class="p-3 d-none d-sm-table-cell">{{ $data->subrole->description ?? '' }}</td>
                         <td class="p-3">
                             <a class="btn btn-sm btn-secondary text-white" href="{{ route('users.details', ['id' => $data->id]) }}">
                                 <i class="bi bi-pencil-square"></i>

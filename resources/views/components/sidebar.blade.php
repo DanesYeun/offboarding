@@ -7,7 +7,7 @@
 
         @if(Auth::check() && Auth::user()->role_id == 1)
             <li class="nav-item py-1">
-                <a class="nav-link bg-primary text-white rounded" h ref="{{ route('users.index') }}">
+                <a class="nav-link bg-primary text-white rounded" href="{{ route('users.index') }}">
                     <i class="bi bi-people-fill p-2"></i>
                     Users
                 </a>
