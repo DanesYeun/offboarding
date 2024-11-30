@@ -15,8 +15,11 @@ use App\Http\Controllers\SendMailController;
 
 //login
 Route::get('/',[LoginController::class, 'index'])->name('login');
-Route::get('register',[LoginController::class, 'register'])->name('register');
-Route::get('forgot_password', [AuthController::class, 'forgot_password'])->name('forgot_password');
+
+Route::middleware('guest')->group(function () {
+    Route::get('register',[LoginController::class, 'register'])->name('register');
+    Route::get('forgot_password', [AuthController::class, 'forgot_password'])->name('forgot_password');
+});
 
 Route::post('process_register', [AuthController::class, 'proccess_register'])->name('process_register');
 Route::post('process_login', [AuthController::class, 'proccess_login']);

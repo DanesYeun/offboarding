@@ -54,11 +54,13 @@ class AuthController extends Controller
 
     public function home()
     {
-        return view('pages.employee.profile.index');
+        $profile = User::where('id',auth()->id())->first();
+        return view('pages.employee.profile.index',compact('profile'));
     }
     public function hr_dashboard()
-    {
-        return view('pages.hr.users.index');
+    { 
+        $users = User::with(['role', 'subrole'])->where("status", 1)->get();
+        return view('pages.hr.users.index', compact('users'));
     }
     public function official_dashboard()
     {
