@@ -13,18 +13,14 @@ return new class extends Migration
     {
         Schema::create('clearance', function (Blueprint $table) {
             $table->increments('id'); 
-            $table->string('description'); 
-            $table->unsignedInteger('purpose');
+            $table->unsignedBigInteger('employment_type');
             $table->string('statement', 255); 
             $table->timestamps(); 
     
-            $table->foreign('purpose')->references('id')->on('clearance_purpose')->onDelete('cascade'); 
+            $table->foreign('employment_type')->references('id')->on('employment_types')->onDelete('cascade'); 
         });
     }
 
-    /**
-     * Reverse the migrations.
-     */
     public function down(): void
     {
         Schema::dropIfExists('clearances');
