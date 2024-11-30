@@ -22,9 +22,9 @@ class UserController extends Controller
     public function create(){
 
         $roles = map_options(Role::class, 'id', 'name');
-        // $subroles = map_options(SubRole::class, 'id', 'description');
 
-        $excludedSubRoles = User::pluck('sub_role')->where('status', '!=', 2)->toArray();
+        //1:1 subrole, exclude active subrole
+        $excludedSubRoles = User::where('status', 1)->pluck('sub_role')->toArray();
 
         $subroles = SubRole::whereNotIn('id', $excludedSubRoles)->get()->map(function ($subrole) {
             return [
