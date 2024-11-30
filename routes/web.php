@@ -42,7 +42,8 @@ Route::post('disable-user/{id}',[UserController::class, 'disable'])->name('users
 
 Route::get('clearances',[ClearanceController::class, 'index'])->name('clearance.index');
 Route::post('clearance-store',[ClearanceController::class, 'store'])->name('clearance.store');
-Route::get('clearance-update/{id}',[ClearanceController::class, 'update'])->name('clearance.update');
+Route::get('clearance-details/{id}',[ClearanceController::class, 'details'])->name('clearance.details');
+Route::post('clearance-update/{id}',[ClearanceController::class, 'update'])->name('clearance.update');
 
 Route::get('requests',[RequestController::class, 'index'])->name('request.index');
 

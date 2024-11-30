@@ -4,7 +4,7 @@ namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Validator;
-use App\Models\ClearancePurpose;
+use App\Models\EmploymentType;
 use App\Models\SubRole;
 use App\Models\User;
 use App\Models\Clearance;
@@ -15,8 +15,7 @@ class ClearanceController extends Controller
 {
     public function index(){
 
-        $purposes = map_options(ClearancePurpose::class, 'id', 'description');
-        // $subRoles = map_options(SubRole::class, 'id', 'description');
+        $employment_types = map_options(EmploymentType::class, 'id', 'description');
 
         //1:1 subrole, exclude active subrole
         $excludedSubRoles = User::where('status', 1)->pluck('sub_role')->toArray();
@@ -28,14 +27,15 @@ class ClearanceController extends Controller
             ];
         });
 
-        return view('pages.hr.clearance.clearance_form.index', compact('purposes', 'subRoles'));
+        $forms = Clearance::with(['officials', 'employment_type_desc'])->get();
+
+        return view('pages.hr.clearance.clearance_form.index', compact('employment_types', 'subRoles', 'forms'));
     }
 
     public function store(Request $request){
 
         $validator = Validator::make($request->all(), [
-            'description' => 'required|string|max:255',
-            'purpose' => 'required|integer',
+            'employment_type' => 'required|integer',
             'statement' => 'required|string|max:255',
         ]);
 
@@ -53,8 +53,7 @@ class ClearanceController extends Controller
         }
 
         $clearance = Clearance::create([
-            'description' => $request->description,
-            'purpose' => $request->purpose,
+            'employment_type' => $request->employment_type,
             'statement' => $request->statement
         ]);
 
@@ -73,12 +72,88 @@ class ClearanceController extends Controller
             ]);
         }
 
-        return redirect()->back()->with('success', 'Clearance officials saved successfully.');
-
+        return redirect()->back()->with('success', 'Clearance Form Added.');
 
     }
 
-    public function update(Request $request){
+    public function details($id){
+
+        $form = Clearance::with(['officials', 'employment_type_desc'])->find($id);
+        $employment_types = map_options(EmploymentType::class, 'id', 'description');
+
+        //1:1 subrole, exclude active subrole
+        $excludedSubRoles = User::where('status', 1)->pluck('sub_role')->toArray();
+
+        $subRoles = SubRole::whereIn('id', $excludedSubRoles)->get()->map(function ($subrole) {
+            return [
+                'id' => $subrole->id,
+                'name' => $subrole->description,
+            ];
+        });
+
+        return view('pages.hr.clearance.clearance_form.edit', compact('form', 'subRoles', 'employment_types'));
+    }
+
+    public function update(Request $request, $id){
         
+        try{
+
+            $clearingOfficial = $request->input('clearing_official', []);
+
+            // handle duplicates in clearing_official
+            $uniqueClearingOfficials = array_unique($clearingOfficial);
+
+            if (count($clearingOfficial) !== count($uniqueClearingOfficials)) {
+                return redirect()->back()->with('error', 'Duplicate clearing officials are not allowed.');
+            }
+
+            $clearance = Clearance::find($id);
+
+            $clearance->update([
+                'employment_type' => $request->employment_type,
+                'statement' => $request->statement
+            ]);
+
+            $deletedIds = $request->input('deleted_ids') ? explode(',', $request->input('deleted_ids')) : [];
+            if (!empty($deletedIds)) {
+                ClearanceOfficial::whereIn('id', $deletedIds)->delete();
+            }
+
+            $seqnos = $request->input('seqno') ?? [];
+            $titles = $request->input('title') ?? [];
+            $clearing_officials = $request->input('clearing_official') ?? [];
+            $update_officials = $request->input('official_id') ?? [];
+            if (!empty($update_officials)) {
+                foreach ($update_officials as $index => $officialId) {
+                    if (!empty($officialId)) {
+                        $official = ClearanceOfficial::find($officialId);
+            
+                        if ($official) {
+                            $official->seqno = $seqnos[$index] ?? null;
+                            $official->title = $titles[$index] ?? null;
+                            $official->clearing_official = $clearing_officials[$index] ?? null;
+                            $official->save();
+                        }
+                    }
+                }
+            }
+
+            foreach ($seqnos as $index => $seqno) {
+                // dd($seqnos , $index,$seqno);
+                if (empty($update_officials[$index])) { 
+                    ClearanceOfficial::create([
+                        'clearance_id' => $clearance->id,
+                        'seqno' => $seqno,
+                        'title' => $titles[$index] ?? null,
+                        'clearing_official' => $clearing_officials[$index] ?? null,
+                    ]);
+                }
+            }
+
+            return redirect()->back()->with('success', 'Form has been successfully updated.');
+
+        }catch(\Exception $e){
+            return redirect()->back()->with('error', 'Please check the details and try again.');
+        }
     }
 }

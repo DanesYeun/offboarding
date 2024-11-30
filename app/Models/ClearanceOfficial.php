@@ -14,4 +14,9 @@ class ClearanceOfficial extends Model
         'title',
         'clearing_official'
     ]; 
+
+    public function clearance()
+    {
+        return $this->belongsTo(Clearance::class, 'clearance_id', 'id');
+    }
 }
