@@ -11,9 +11,14 @@ return new class extends Migration
      */
     public function up(): void
     {
-        Schema::create('clearances', function (Blueprint $table) {
-            $table->id();
-            $table->timestamps();
+        Schema::create('clearance', function (Blueprint $table) {
+            $table->increments('id'); 
+            $table->string('description'); 
+            $table->unsignedInteger('purpose');
+            $table->string('statement', 255); 
+            $table->timestamps(); 
+    
+            $table->foreign('purpose')->references('id')->on('clearance_purpose')->onDelete('cascade'); 
         });
     }
 
