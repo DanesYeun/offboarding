@@ -10,6 +10,7 @@ use App\Models\Role;
 use App\Models\SubRole;
 use App\Http\Controllers\SendMailController;
 use Illuminate\Support\Str;
+use Illuminate\Support\Facades\Auth;
 
 class UserController extends Controller
 {
@@ -133,5 +134,25 @@ class UserController extends Controller
         ]);
 
         return redirect()->route('users.index')->with('success', 'User account successfully disabled.');
+    }
+
+
+    public function change_password(){
+        return view ('pages.auth.change_password');
+    }
+
+    public function process_change_password(Request $request){
+        try{
+            $user = Auth::user();
+            if (Hash::check($request->password, $user->password)) {
+                $user->update(['password' => bcrypt($request->new_password)]);
+                return redirect()->back()->with('success', 'Password change successfuly.');
+            }else{
+                return redirect()->back()->with('error', 'Password not match.');
+            }
+        }
+        catch(\Exception $e){
+        return redirect()->back()->with('error', "Something went wrong");
+        }
     }
 }

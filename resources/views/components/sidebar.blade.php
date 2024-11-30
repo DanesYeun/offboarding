@@ -70,6 +70,13 @@
         <!-- For employee -->
 
         <li class="nav-item py-1">
+            <a class="nav-link" href="{{route('users.change_password')}}" onclick="">         
+                <i class="bi bi-award-fill p-2"></i> 
+                Change password
+            </a>
+        </li>
+
+        <li class="nav-item py-1">
             <a class="nav-link text-danger" href="/logout" onclick="event.preventDefault(); document.getElementById('logout-form').submit();">         
                 <i class="bi bi-door-closed fs-5 p-2"></i> 
                 Logout
