@@ -15,8 +15,15 @@ class ClearanceController extends Controller
 {
     public function index(){
 
-        $employment_types = map_options(EmploymentType::class, 'id', 'description');
-
+        //1:1 clearance type, exclude used type
+        $usedEmploymentTypeIds = Clearance::pluck('employment_type')->toArray();
+        $employment_types = EmploymentType::whereNotIn('id', $usedEmploymentTypeIds)->get()->map(function ($type) {
+            return [
+                'id' => $type->id,
+                'name' => $type->description,
+            ];
+        });
+        
         //1:1 subrole, exclude active subrole
         $excludedSubRoles = User::where('status', 1)->pluck('sub_role')->toArray();
 
