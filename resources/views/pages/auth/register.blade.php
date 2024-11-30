@@ -18,7 +18,7 @@
                 <form method="post" action="{{route('process_register')}}" class="needs-validation" novalidate>
                     @csrf               
                         <x-input type="text" name="name" label="Name" mdSize="12"/>
-                        <x-input type="text" name="username" label="Username" mdSize="12"/>
+                        {{-- <x-input type="text" name="username" label="Username" mdSize="12"/> --}}
                         <x-input type="email" name="email" label="Email" mdSize="12"/>
                         <x-input type="password" name="password" label="Password" mdSize="12"/>
 

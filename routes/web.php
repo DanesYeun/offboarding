@@ -16,9 +16,12 @@ use App\Http\Controllers\SendMailController;
 //login
 Route::get('/',[LoginController::class, 'index'])->name('login');
 Route::get('register',[LoginController::class, 'register'])->name('register');
+Route::get('forgot_password', [AuthController::class, 'forgot_password'])->name('forgot_password');
 
 Route::post('process_register', [AuthController::class, 'proccess_register'])->name('process_register');
 Route::post('process_login', [AuthController::class, 'proccess_login']);
+Route::post('process_forgot_password', [AuthController::class, 'process_forgot_password'])->name('process_forgot_password');
+
 
 Route::get('home',[AuthController::class, 'home'])->name('home')->middleware('auth')->middleware('can:access-home');
 Route::get('hr',[AuthController::class, 'hr_dashboard'])->name('hr_dashboard')->middleware('auth')->middleware('can:access-hr');

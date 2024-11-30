@@ -7,6 +7,7 @@ use Illuminate\Support\Facades\Validator;
 use Illuminate\Support\Facades\Auth;
 use App\Models\User;
 use App\Http\Controllers\SendMailController;
+use Illuminate\Support\Str;
 
 
 class AuthController extends Controller
@@ -92,7 +93,7 @@ class AuthController extends Controller
             <p>Here are your account details:</p>
             <ul>
                 <li><strong>Email:</strong> $email</li>
-                <li><strong>Username:</strong> $request->name</li>
+                <li><strong>Name:</strong> $request->name</li>
             </ul>
             <p>You can log in to your account using the credentials you provided during registration.</p>
             <p>If you did not register for an account, please ignore this email or contact our support team.</p>
@@ -106,7 +107,7 @@ class AuthController extends Controller
             try{
                 $response = $SendMailController->send_email($email,$subject,$body_messge);
             }catch(\Exception $e){
-                return response()->json(['error','error']);
+                return redirect()->back()->with('error', 'Unable to send email. Please try again later');
             }
 
             return redirect()->back()->with('success', 'Successfully registered.');
@@ -133,4 +134,56 @@ class AuthController extends Controller
 
         return redirect()->route('login')->with('success', 'Successfully logged out.');
     }
+
+    public function forgot_password(){
+        return view('pages.auth.forgotpass');
+    }
+
+    public function process_forgot_password(Request $request){
+
+        try{
+        $user = User::where('email', $request->email)
+        ->where('name', $request->name)
+        ->first();
+        try{
+
+            $randomPassword = Str::random(8);
+            $email = $request->email;
+            $subject = "Reset Password";
+            $body_messge = "
+                <p>Dear $request->name,</p>
+                <p>We have generated a new password for your account. Below are your updated login details:</p>
+                <ul>
+                    <li><strong>Email:</strong> $email</li>
+                    <li><strong>Password:</strong> $randomPassword</li>
+                </ul>
+                <p>Please use these credentials to log in to your account. For security reasons, we recommend updating your password immediately after logging in.</p>
+                <p>Best regards,</p>
+                <p>The WBEO Team</p>
+                ";
+
+        if($user){
+            $user->update(['password' => bcrypt($randomPassword)]);
+            $SendMailController = new SendMailController();
+            $SendMailController->send_email($email,$subject,$body_messge);
+        }
+        
+        }catch(\Exception $e){
+            return redirect()->back()->with('error', 'Unable to send email. Please try again later');
+        }
+
+        return $user ? 
+        redirect()->back()->with('success', 'Successfully password reset.') : 
+        redirect()->back()->with('error', 'User not found');
+
+    }catch(\Exception $e){
+        return redirect()->back()->with('error', 'Something went wrong');
+    }
+       
+    }
+    
+
+
+
+
 }

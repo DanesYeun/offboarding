@@ -70,7 +70,7 @@ class UserController extends Controller
             <ul>
                 <li><strong>Email:</strong> $email</li>
                 <li><strong>Username:</strong> $request->name</li>
-                <li><strong>Password:</strong> $randomPassword</li>
+                <li><strong>Name:</strong> $randomPassword</li>
             </ul>
             <p>You can now log in to your account using the provided credentials.</p>
             <p>If you did not request an account, please disregard this email.</p>
@@ -84,7 +84,7 @@ class UserController extends Controller
             try{
                 $SendMailController->send_email($email,$subject,$body_messge);
             }catch(\Exception $e){
-                return response()->json(['error','error']);
+                return redirect()->back()->with('error', 'Unable to send email. Please try again later');
             }
            
         }
