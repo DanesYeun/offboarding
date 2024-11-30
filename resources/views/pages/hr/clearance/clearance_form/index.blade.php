@@ -2,10 +2,7 @@
 
 @section('content')
     <div class="d-flex flex-column m-md-2">
-        <!-- DElete this, if naa na backend -->
-        @php
-            $users = [];
-        @endphp
+
         <h2 class="text-primary text-start">
             Manage Clearance
         </h2>
@@ -34,37 +31,17 @@
 
                 <div id="collapseOne" class="accordion-collapse collapse" data-bs-parent="#accordionExample">
                     <div class="accordion-body">
-                        <form method="post" id="clearance-form" action="{{ isset($clearance) ? route('clearance.update', $clearance->id) : route('clearance.store') }}"  class="needs-validation" novalidate>
+                        <form method="post" id="clearance-form" action="{{route('clearance.store')}}"  class="needs-validation" novalidate>
                             @csrf
                             <div class="container row">
                                 <h4 class="py-2 text-primary text-start">Clearance Form</h4>
-                        
-                                {{-- Description Input --}}
-                                <x-input 
-                                    name="description" 
-                                    label="Description" 
-                                    type="text" 
-                                    mdSize="6" 
-                                    required="true" 
-                                    :value="old('description', $clearance->description ?? '')" 
-                                />
-                        
-                                {{-- Purpose Dropdown --}}
-                                <x-select 
-                                    name="purpose" 
-                                    label="Purpose" 
-                                    :options="$purposes" 
-                                    required="true" 
-                                    sizeMd="6" 
-                                    :value="old('purpose', $clearance->purpose ?? '')" 
-                                />
-                        
-                                {{-- Statement Textarea --}}
-                                <x-textarea 
-                                    name="statement" 
-                                    label="Statement" 
-                                    :value="old('statement', $clearance->statement ?? '')" 
-                                />
+                                
+                                <x-select name="employment_type" label="Type Of Form" :options="$employment_types" required="true" sizeMd="6" />
+
+                                <x-input name="statement" label="Statement" type="text" mdSize="6" required="true"/>
+                                
+                                {{-- <x-textarea name="statement" label="Statement" /> --}}
+
                         
                                 <h5 class="py-2 text-primary text-start">Add Clearing Officials</h5>
                         
@@ -80,42 +57,7 @@
                                             </tr>
                                         </thead>
                                         <tbody>
-                                            @if(isset($clearance) && $clearance->clearingOfficials)
-                                                @foreach($clearance->clearingOfficials as $official)
-                                                    <tr>
-                                                        <td>
-                                                            <x-input 
-                                                                name="seqno[]" 
-                                                                type="number" 
-                                                                :value="old('seqno[]', $official->seqno)" 
-                                                            />
-                                                        </td>
-                                                        <td>
-                                                            <x-input 
-                                                                name="title[]" 
-                                                                type="text" 
-                                                                :value="old('title[]', $official->title)" 
-                                                            />
-                                                        </td>
-                                                        <td>
-                                                            <x-select 
-                                                                name="clearing_official[]" 
-                                                                :options="$subRoles" 
-                                                                :value="old('clearing_official[]', $official->clearing_official)" 
-                                                            />
-                                                        </td>
-                                                        <td>
-                                                            <button type="button" class="btn btn-danger btn-sm remove-row">
-                                                                <i class="bi bi-trash-fill"></i>
-                                                            </button>
-                                                        </td>
-                                                    </tr>
-                                                @endforeach
-                                            @else
-                                                <tr>
-                                                    
-                                                </tr>
-                                            @endif
+
                                         </tbody>
                                     </table>
                                     <button type="button" id="add-row" class="btn btn-primary btn-sm">
@@ -137,7 +79,7 @@
                 </div>
             </div>
         </div>
-        <x-clearance-requests-table label="Clearance Form" :datas="$users"/>
+        <x-clearance-forms-table label="Clearance Form" :datas="$forms"/>
     </div>
 @endsection
 
