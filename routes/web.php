@@ -2,7 +2,7 @@
 
 use App\Http\Controllers\EmployeeCOEController;
 use App\Http\Controllers\EmployeeProfileController;
-use App\Http\Controllers\EmployeeRequestClearance;
+use App\Http\Controllers\EmployeeRequestClearanceController;
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\LoginController;
 use App\Http\Controllers\RegisterController;
@@ -47,7 +47,8 @@ Route::get('requests',[RequestController::class, 'index'])->name('request.index'
 Route::get('profile', [EmployeeProfileController::class, 'index'])->name('profile.index');
 Route::post('update-profile/{id}', [EmployeeProfileController::class, 'update'])->name('profile.update');
 
-Route::get('clearance', [EmployeeRequestClearance::class, 'index'])->name('employee_clearance.index');
+Route::get('clearance', [EmployeeRequestClearanceController::class, 'index'])->name('employee_clearance.index');
+Route::post('sumbit-request', [EmployeeRequestClearanceController::class, 'store'])->name('employee_clearance.store');
 
 Route::get('COE', [EmployeeCOEController::class, 'index'])->name('employee_coe.index');
 

@@ -58,4 +58,9 @@ class User extends Authenticatable
     {
         return $this->belongsTo(SubRole::class, 'sub_role', 'id');
     }
+
+    public function clearance_requests()
+    {
+        return $this->hasMany(ClearanceRequest::class);
+    }
 }
