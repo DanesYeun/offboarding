@@ -8,7 +8,8 @@ use Illuminate\Support\Facades\Hash;
 use App\Models\User;
 use App\Models\Role;
 use App\Models\SubRole;
-
+use App\Http\Controllers\SendMailController;
+use Illuminate\Support\Str;
 
 class UserController extends Controller
 {
@@ -43,23 +44,50 @@ class UserController extends Controller
             'name' => 'required|string|max:255',
             'role' => 'required|exists:roles,id',
             'subrole' => 'required|exists:sub_roles,id',
-            'emailaddress' => 'required|email|unique:users,email|max:255',
-            'password' => 'required|string|min:8|confirmed',
+            'emailaddress' => 'required|email|unique:users,email|max:255'
         ]);
 
         if ($validator->fails()) {
             return back()->with('error', implode('<br>', $validator->errors()->all()));
         }
 
-        User::create([
+        $randomPassword = Str::random(8);
+        $reg = User::create([
             'name' => $request->name,
             'email' => $request->emailaddress,
-            'password' => Hash::make($request->password),
+            'password' => Hash::make($randomPassword),
             'role_id' => $request->role,
             'sub_role' => $request->subrole,
             'status' => 1
             
         ]);
+        $email = $request->emailaddress;
+        $subject = "Welcome to Our Service - Your Login Credentials";
+        $body_messge = "
+            <p>Dear $request->name,</p>
+            <p>We are pleased to inform you that your account has been successfully created by your HR team.</p>
+            <p>Below are your account details:</p>
+            <ul>
+                <li><strong>Email:</strong> $email</li>
+                <li><strong>Username:</strong> $request->name</li>
+                <li><strong>Password:</strong> $randomPassword</li>
+            </ul>
+            <p>You can now log in to your account using the provided credentials.</p>
+            <p>If you did not request an account, please disregard this email.</p>
+            <p>Best regards,</p>
+            <p>The WBEO Team</p>
+            ";
+
+        if($reg){
+
+            $SendMailController = new SendMailController();
+            try{
+                $SendMailController->send_email($email,$subject,$body_messge);
+            }catch(\Exception $e){
+                return response()->json(['error','error']);
+            }
+           
+        }
 
         return back()->with('success', 'Sucessfully Added User!');
     }

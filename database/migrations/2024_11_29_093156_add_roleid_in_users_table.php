@@ -12,7 +12,8 @@ return new class extends Migration
     public function up(): void
     {
         Schema::table('users', function (Blueprint $table) {
-            $table->tinyInteger('role_id')->unsigned()->after('remember_token');
+            $table->unsignedTinyInteger('role_id')->after('remember_token'); // Matches TINYINT UNSIGNED in `roles`
+
 
             $table->foreign('role_id')->references('id')->on('roles')->onDelete('cascade'); 
         });

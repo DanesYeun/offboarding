@@ -6,6 +6,7 @@ use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Validator;
 use Illuminate\Support\Facades\Auth;
 use App\Models\User;
+use App\Http\Controllers\SendMailController;
 
 
 class AuthController extends Controller
@@ -83,8 +84,31 @@ class AuthController extends Controller
             'status' => 1
 
         ]);
+        $email = $request->email;
+        $subject = "Welcome to Our Service - Registration Confirmation";
+        $body_messge = "
+            <p>Dear $request->name,</p>
+            <p>Thank you for registering with us!</p>
+            <p>Here are your account details:</p>
+            <ul>
+                <li><strong>Email:</strong> $email</li>
+                <li><strong>Username:</strong> $request->name</li>
+            </ul>
+            <p>You can log in to your account using the credentials you provided during registration.</p>
+            <p>If you did not register for an account, please ignore this email or contact our support team.</p>
+            <p>Best regards,</p>
+            <p>The WBEO Team</p>
+            ";
+       
 
         if($reg){
+            $SendMailController = new SendMailController();
+            try{
+                $response = $SendMailController->send_email($email,$subject,$body_messge);
+            }catch(\Exception $e){
+                return response()->json(['error','error']);
+            }
+
             return redirect()->back()->with('success', 'Successfully registered.');
         }else{
             return redirect()->back()->with('error', 'Registration failed');
