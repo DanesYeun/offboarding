@@ -17,7 +17,7 @@ return new class extends Migration
             $table->unsignedInteger('clearance_id');
             $table->unsignedBigInteger('employee_type'); 
             $table->unsignedInteger('seqno');
-            $table->unsignedBigInteger('clearing_official_id'); 
+            $table->unsignedBigInteger('clearing_official_user_id'); 
             $table->string('comment', 255)->nullable(); 
             $table->tinyInteger('isApproved')->default(0); 
             $table->timestamps(); 
@@ -26,7 +26,7 @@ return new class extends Migration
             $table->foreign('request_id')->references('id')->on('clearance_requests')->onDelete('cascade');
             $table->foreign('clearance_id')->references('id')->on('clearance')->onDelete('cascade');
             $table->foreign('employee_type')->references('id')->on('employment_types')->onDelete('cascade');
-            $table->foreign('clearing_official_id')->references('id')->on('users')->onDelete('cascade');
+            $table->foreign('clearing_official_user_id')->references('id')->on('users')->onDelete('cascade');
         });
     }
 
