@@ -11,7 +11,7 @@
                     <th scope="col" class="p-3 bg-primary text-white">Name</th>
                     <th scope="col" class="p-3 bg-primary text-white">Email</th>
                     <th scope="col" class="p-3 bg-primary text-white d-none d-sm-table-cell">Role</th>
-                    <th scope="col" class="p-3 bg-primary text-white">Sub Role</th>
+                    <th scope="col" class="p-3 bg-primary text-white d-none d-sm-table-cell">Sub Role</th>
                     <th scope="col" class="p-3 bg-primary text-white">Action</th>
                 </tr>
             </thead>
@@ -19,14 +19,14 @@
                 @foreach($datas as $data)
                     <tr>
                         <td class="p-3">{{ $data->id }}</td>
-                        <td class="p-3">{{ $data->firstname }} {{ $data->lastname }}</td>
-                        <td class="p-3 d-none d-sm-table-cell">{{ $data->role_relation->description }}</td>
-                        <td class="p-3"><small class="badge rounded-pill text-bg-success">{{ $data->status ? 'Active' : '' }}</small></td>
+                        <td class="p-3">{{ $data->name }}</td>
+                        <td class="p-3 d-none d-sm-table-cell">{{ $data->role->name }}</td>
+                        <td class="p-3 d-none d-sm-table-cell">{{ $data->subrole->description }}</td>
                         <td class="p-3">
-                            <a class="btn btn-sm btn-secondary text-white" href="{{ route('users.details', ['id' => $data->id]) }}">
+                            <a class="btn btn-sm btn-secondary text-white" href="">
                                 <i class="bi bi-pencil-square"></i>
                             </a>
-                            <form action="{{ route('users.disable', ['id' => $data->id]) }}" method="POST" style="display: inline;">
+                            <form action="" method="POST" style="display: inline;">
                                 @csrf
                                 <button type="submit" class="btn btn-sm btn-danger my-2">
                                     <i class="bi bi-exclamation-circle"></i>
