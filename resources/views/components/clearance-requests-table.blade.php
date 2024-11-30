@@ -2,6 +2,11 @@
 <div class="container mt-2 table-container p-2">   
     <div class="mb-1 d-flex justify-content-between">
         <h5 class="p-1 text-secondary">{{ $label }}</h5>
+        @if(session('success'))
+            <x-toast :message="session('success')" :type="'success'" :icon="'bi-check-circle-fill'" />
+        @elseif(session('error'))
+            <x-toast :message="session('error')" :type="'danger'" :icon="'bi-exclamation-circle-fill'" />
+        @endif
         <input type="text" id="searchInput" class="form-control w-25" placeholder="Search...">
     </div>
     <div class="table-responsive">
