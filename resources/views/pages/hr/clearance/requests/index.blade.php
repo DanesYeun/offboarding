@@ -12,10 +12,10 @@
 
         <ul class="nav nav-tabs mb-3">
             <li class="nav-item">
-                <a class="nav-link" aria-current="page" href="#">Clearance Form</a>
+                <a class="nav-link" aria-current="page" href="{{route('clearance.index')}}">Clearance Form</a>
             </li>
             <li class="nav-item">
-                <a class="nav-link active" href="#">Requests</a>
+                <a class="nav-link active" href="{{route('request.index')}}">Requests</a>
             </li>
         </ul>
         <x-clearance-requests-table label="Requests" :datas="$users"/>
