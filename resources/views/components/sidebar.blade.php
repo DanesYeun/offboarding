@@ -7,13 +7,13 @@
 
         @if(Auth::check() && Auth::user()->role_id == 1)
             <li class="nav-item py-1">
-                <a class="nav-link bg-primary text-white rounded" href="#">
+                <a class="nav-link bg-primary text-white rounded" href="{{ route('users.index') }}">
                     <i class="bi bi-people-fill p-2"></i>
                     Users
                 </a>
             </li>
             <li class="nav-item py-1">
-                <a class="nav-link bg-light rounded" href="#">
+                <a class="nav-link bg-light rounded" href="{{route('clearance.index')}}">
                     <i class="bi bi-file-earmark-fill p-2"></i>
                     Manage Clearance
                 </a>

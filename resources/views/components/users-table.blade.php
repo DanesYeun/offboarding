@@ -2,6 +2,11 @@
 <div class="container mt-2 table-container p-2">   
     <div class="mb-1 d-flex justify-content-between">
         <h5 class="p-1 text-secondary">{{ $label }}</h5>
+        @if(session('error'))
+            <x-toast :message="session('success')" :type="'success'" :icon="'bi-check-circle-fill'" />
+        @elseif(session('success'))
+            <x-toast :message="session('error')" :type="'danger'" :icon="'bi-exclamation-circle-fill'" />
+        @endif
         <input type="text" id="searchInput" class="form-control w-25" placeholder="Search...">  
     </div>
     <div class="table-responsive">
@@ -23,10 +28,10 @@
                         <td class="p-3 d-none d-sm-table-cell">{{ $data->role->name }}</td>
                         <td class="p-3 d-none d-sm-table-cell">{{ $data->subrole->description }}</td>
                         <td class="p-3">
-                            <a class="btn btn-sm btn-secondary text-white" href="">
+                            <a class="btn btn-sm btn-secondary text-white" href="{{ route('users.details', ['id' => $data->id]) }}">
                                 <i class="bi bi-pencil-square"></i>
                             </a>
-                            <form action="" method="POST" style="display: inline;">
+                            <form action="{{ route('users.disable', ['id' => $data->id]) }}" method="POST" style="display: inline;">
                                 @csrf
                                 <button type="submit" class="btn btn-sm btn-danger my-2">
                                     <i class="bi bi-exclamation-circle"></i>

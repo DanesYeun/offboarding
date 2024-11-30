@@ -46,6 +46,7 @@
 
 
                     <div class="d-flex justify-content-end">   
+                        <a href="{{ url()->previous() }}" class="btn btn-danger mx-2"><i class="bi bi-arrow-left-circle p-2"></i> Back</a>
                         <button type="submit" class="btn btn-success mx-2"><i class="bi bi-person-fill-add p-2"></i> Add User</button>
                     </div> 
                 </div>

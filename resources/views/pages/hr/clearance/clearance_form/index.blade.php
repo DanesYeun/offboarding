@@ -12,10 +12,10 @@
 
         <ul class="nav nav-tabs mb-3">
             <li class="nav-item">
-                <a class="nav-link active" aria-current="page" href="#">Clearance Form</a>
+                <a class="nav-link active" aria-current="page" href="{{route('clearance.index')}}">Clearance Form</a>
             </li>
             <li class="nav-item">
-                <a class="nav-link" href="#">Requests</a>
+                <a class="nav-link" href="{{route('request.index')}}">Requests</a>
             </li>
         </ul>
         <div class="accordion" id="accordionExample">
@@ -32,11 +32,7 @@
                             @csrf
                             <div class="container row">
                                 <h4 class="py-2 text-primary text-start">Clearance Form</h4>
-                                <x-input name="description" label="Description" type="text" mdSize="6" required="true"/>
-
-                                @php
-                                    $purposes = [['id' => 1, 'name' => 'Resignation']];
-                                @endphp           
+                                <x-input name="description" label="Description" type="text" mdSize="6" required="true"/>         
                                 <x-select name="purpose" label="Purpose" :options="$purposes" required="true" sizeMd="6"/>    
                                 <x-textarea label="Statement" name="statement"/>
 
