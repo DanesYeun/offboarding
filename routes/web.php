@@ -48,6 +48,7 @@ Route::get('clearance-details/{id}',[ClearanceController::class, 'details'])->na
 Route::post('clearance-update/{id}',[ClearanceController::class, 'update'])->name('clearance.update');
 
 Route::get('requests',[RequestController::class, 'index'])->name('request.index');
+Route::post('request-status/{id}',[RequestController::class, 'update_status'])->name('request.status');
 
 
 Route::get('profile', [EmployeeProfileController::class, 'index'])->name('profile.index');

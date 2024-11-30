@@ -15,10 +15,15 @@
                 <a class="nav-link" aria-current="page" href="{{route('clearance.index')}}">Clearance Form</a>
             </li>
             <li class="nav-item">
-                <a class="nav-link active" href="{{route('request.index')}}">Requests</a>
+                <a class="nav-link active" href="{{route('request.index')}}">
+                    Requests
+                    @if($count_new_requests > 0)
+                        <span class="badge bg-danger ms-2">{{ $count_new_requests }}</span>
+                    @endif
+                </a>
             </li>
         </ul>
-        <x-clearance-requests-table label="Requests" :datas="$users"/>
+        <x-clearance-requests-table label="Requests" :datas="$requests"/>
     </div>
 @endsection
 

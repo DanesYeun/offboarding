@@ -18,7 +18,12 @@
                 <a class="nav-link active" aria-current="page" href="{{route('clearance.index')}}">Clearance Form</a>
             </li>
             <li class="nav-item">
-                <a class="nav-link" href="{{route('request.index')}}">Requests</a>
+                <a class="nav-link" href="{{route('request.index')}}">
+                    Requests
+                    @if($count_new_requests > 0)
+                        <span class="badge bg-danger ms-2">{{ $count_new_requests }}</span>
+                    @endif
+                </a>
             </li>
         </ul>
         <div class="accordion" id="accordionExample">
@@ -36,7 +41,7 @@
                             <div class="container row">
                                 <h4 class="py-2 text-primary text-start">Clearance Form</h4>
                                 
-                                <x-select name="employment_type" label="Type Of Form" :options="$employment_types" required="true" sizeMd="6" />
+                                <x-select name="employment_type" label="Type Of Clearance" :options="$employment_types" required="true" sizeMd="6" />
 
                                 <x-input name="statement" label="Statement" type="text" mdSize="6" required="true"/>
                                 
