@@ -7,6 +7,7 @@ use App\Http\Controllers\AuthController;
 use App\Http\Controllers\ClearanceController;
 use App\Http\Controllers\RequestController;
 use App\Http\Controllers\UserController;
+use App\Http\Controllers\SendMailController;
 
 
 //login
@@ -15,8 +16,11 @@ Route::get('register',[LoginController::class, 'register'])->name('register');
 
 Route::post('process_register', [AuthController::class, 'proccess_register'])->name('process_register');
 Route::post('process_login', [AuthController::class, 'proccess_login']);
+
 Route::get('home',[AuthController::class, 'home'])->name('home')->middleware('auth')->middleware('can:access-home');
+Route::get('hr',[AuthController::class, 'hr_dashboard'])->name('hr_dashboard')->middleware('auth')->middleware('can:access-hr');
 Route::get('official',[AuthController::class, 'official_dashboard'])->name('official_dashboard')->middleware('auth')->middleware('can:access-official');
+
 Route::post('logout', [AuthController::class, 'logout'])->name('logout');
 
 Route::get('users',[UserController::class, 'index'])->name('users.index');
@@ -32,6 +36,9 @@ Route::get('clearances',[ClearanceController::class, 'index'])->name('clearance.
 Route::get('requests',[RequestController::class, 'index'])->name('request.index');
 
 
+
+
+Route::post('send_email', [SendMailController::class, 'Send_email'])->name('send_email');;
 
 
 

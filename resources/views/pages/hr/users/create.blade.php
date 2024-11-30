@@ -41,8 +41,8 @@
                             </span>
                         @endif
                     </div> --}}
-                    <x-input name="password" label="Password" type="password" required="true"/>
-                    <x-input name="password_confirmation" label="Confirm Password" type="password" required="true"/>
+                    {{-- <x-input name="password" label="Password" type="password" required="true"/>
+                    <x-input name="password_confirmation" label="Confirm Password" type="password" required="true"/> --}}
 
 
                     <div class="d-flex justify-content-end">   
