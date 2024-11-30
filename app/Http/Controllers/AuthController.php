@@ -35,7 +35,7 @@ class AuthController extends Controller
                 break;
                 case 2:   return  redirect()->intended(route('official_dashboard'));
                 break;
-                case 3:   return  redirect()->intended(route('home'));
+                case 3:   return  redirect()->intended(route('profile.index'));
                 break;
             }
 

@@ -47,21 +47,21 @@
         <!-- For employee -->
         @if(Auth::check() && Auth::user()->role_id == 3)
             <li class="nav-item py-1">
-                <a class="nav-link bg-light rounded" href="#">
-                    <i class="bi bi-person-fill p-2"></i>
-                    Manage Profile
-                </a>
+            <a class="nav-link {{ Str::startsWith(Route::currentRouteName(), 'profile') ? 'bg-primary text-white rounded' : '' }}" href="{{ route('profile.index') }}">
+                <i class="bi bi-person-fill p-2"></i>
+                Manage Profile
+            </a>
             </li>
 
             <li class="nav-item py-1">
-                <a class="nav-link bg-light rounded" href="#">
+                <a class="nav-link {{ Str::startsWith(Route::currentRouteName(), 'employee_clearance') ? 'bg-primary text-white rounded' : '' }}" href="{{ route('employee_clearance.index') }}">
                     <i class="bi bi-file-earmark-fill p-2"></i>
                     Request Clearance
                 </a>
             </li>
 
             <li class="nav-item py-1">
-                <a class="nav-link bg-light rounded" href="#">
+                <a class="nav-link {{ Str::startsWith(Route::currentRouteName(), 'employee_coe') ? 'bg-primary text-white rounded' : '' }}" href="{{ route('employee_coe.index') }}">
                     <i class="bi bi-award-fill p-2"></i>
                     COE
                 </a>
