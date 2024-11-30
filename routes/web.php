@@ -11,8 +11,8 @@ use App\Http\Controllers\UserController;
 
 //login
 Route::get('/',[LoginController::class, 'index'])->name('login');
+Route::get('register',[LoginController::class, 'register'])->name('register');
 
-Route::get('register',[LoginController::class, 'register']);
 Route::post('process_register', [AuthController::class, 'proccess_register'])->name('process_register');
 Route::post('process_login', [AuthController::class, 'proccess_login']);
 Route::get('home',[AuthController::class, 'home'])->name('home')->middleware('auth')->middleware('can:access-home');

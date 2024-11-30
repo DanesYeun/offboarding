@@ -24,7 +24,7 @@
     </head>
     <body class="font-sans antialiased dark:bg-black dark:text-white/50 p-0 d-flex overflow-hidden flex-column" style="height: 100vh;">
     
-        @if( Route::currentRouteName() == 'loginPage')
+        @if( Route::currentRouteName() == 'login' || Route::currentRouteName() == 'register')
             <header>
                 <x-header/>
             </header>
@@ -34,6 +34,7 @@
             @auth
                 <x-sidebar/>
             @endauth
+            
             <!-- stage -->
             <div class="w-100 h-100 overflow-auto text-center p-2 bg-light" style="width: 100vh; height: 100vh;">
                 @yield('content')

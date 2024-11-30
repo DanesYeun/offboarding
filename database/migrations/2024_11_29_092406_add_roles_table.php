@@ -12,7 +12,7 @@ return new class extends Migration
     public function up(): void
     {
         Schema::create('roles', function (Blueprint $table) {
-            $table->tinyIncrements('id')->unsigned(); 
+            $table->tinyIncrements('id'); // Auto-incrementing unsigned TINYINT 
             $table->string('name'); 
             $table->timestamps();
         });
