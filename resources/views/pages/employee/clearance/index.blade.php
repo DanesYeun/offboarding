@@ -2,7 +2,7 @@
 
 @section('content')
     @php
-        $hasClearance = true;
+        $hasClearance = false;
     @endphp
     <div class="d-flex justify-content-center m-md-2">
         @if($hasClearance != 'true')

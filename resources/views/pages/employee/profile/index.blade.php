@@ -11,13 +11,12 @@
                 <div class="border rounded mb-3" style="height: 100px;">
                     IMAGE HERE
                 </div>
-                <form action="#" method="POST" class="needs-validation row m-0" novalidate>
+                <x-toast/>
+                <form action="{{ route('profile.update', $profile->id) }}" method="POST" class="needs-validation row m-0" novalidate>
                     @csrf
-                    <x-input type="text" label="Name" name="name" mdSize="6" disabled />
-                    <x-input type="email" label="Email" name="email" mdSize="6" disabled="true" />
-                    <x-input type="text" label="Username" name="username" mdSize="6" disabled="true" />
-                    <x-input type="file" label="Profile Picture" name="profilePicture" mdSize="6" disabled="true" />
-                
+                    <x-input type="text" label="Name" name="name" mdSize="6" value="{{ $profile->name }}"/>
+                    <x-input type="email" label="Email" name="email" mdSize="6" value="{{ $profile->email }}" />
+                    <x-input type="file" label="Profile Picture" name="profilePicture" mdSize="12" disabled="true" />               
                     <div class="col-12 text-end">
                         <button type="submit" class="btn btn-success">
                             <i class="bi bi-floppy-fill p-2"></i>
