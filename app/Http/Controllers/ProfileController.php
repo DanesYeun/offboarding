@@ -6,13 +6,13 @@ use App\Models\User;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Validator;
 
-class EmployeeProfileController extends Controller
+class ProfileController extends Controller
 {
     public function index()
     {
         $profile = User::where('id',auth()->id())->first();
 
-        return view('pages.employee.profile.index', compact('profile'));
+        return view('pages.profile.index', compact('profile'));
     }
 
     public function update(Request $request, $id)

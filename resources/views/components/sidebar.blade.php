@@ -3,29 +3,34 @@
         LOGO HERE
     </div>
     <ul class="nav flex-column">
-        <!-- For HR -->
+        <li class="nav-item py-1">
+            <a class="nav-link {{ Str::startsWith(Route::currentRouteName(), 'profile') ? 'bg-primary text-white rounded' : '' }}" href="{{ route('profile.index') }}">
+                <i class="bi bi-person-fill p-2"></i>
+                Manage Profile
+            </a>
+        </li>
 
         @if(Auth::check() && Auth::user()->role_id == 1)
             <li class="nav-item py-1">
-                <a class="nav-link bg-primary text-white rounded" href="{{ route('users.index') }}">
+                <a class="nav-link {{ Str::startsWith(Route::currentRouteName(), 'users') ? 'bg-primary text-white rounded' : '' }}" href="{{ route('users.index') }}">
                     <i class="bi bi-people-fill p-2"></i>
                     Users
                 </a>
             </li>
             <li class="nav-item py-1">
-                <a class="nav-link bg-light rounded" href="{{route('clearance.index')}}">
+                <a class="nav-link {{ Str::startsWith(Route::currentRouteName(), 'clearance') ? 'bg-primary text-white rounded' : '' }}" href="{{route('clearance.index')}}">
                     <i class="bi bi-file-earmark-fill p-2"></i>
                     Manage Clearance
                 </a>
             </li>
             <li class="nav-item py-1">
-                <a class="nav-link bg-light rounded" href="#">
+                <a class="nav-link {{ Str::startsWith(Route::currentRouteName(), 'hr_questionnaire') ? 'bg-primary text-white rounded' : '' }}" href="{{ route('hr_questionnaire.index')}}">
                     <i class="bi bi-question-circle-fill p-2"></i>
                     Questionnaire
                 </a>
             </li>
             <li class="nav-item py-1">
-                <a class="nav-link bg-light rounded" href="#">
+                <a class="nav-link" href="#">
                     <i class="bi bi-award-fill p-2"></i>
                     Generate COE
                     @if($count_completed_requests > 0)
@@ -34,28 +39,17 @@
                 </a>
             </li>
         @endif
-        <!-- For HR -->
-        
-        <!-- For Clearing officer -->
+
         @if(Auth::check() && Auth::user()->role_id == 2)
             <li class="nav-item py-1">
-                <a class="nav-link bg-light rounded" href="#">
+                <a class="nav-link {{ Str::startsWith(Route::currentRouteName(), 'official_requests') ? 'bg-primary text-white rounded' : '' }}" href="{{ route('official_requests.index') }}">
                     <i class="bi bi-file-earmark-fill p-2"></i>
                     Request Clearance
                 </a>
             </li>
         @endif
-        <!-- For Clearing officer -->
 
-        <!-- For employee -->
         @if(Auth::check() && Auth::user()->role_id == 3)
-            <li class="nav-item py-1">
-            <a class="nav-link {{ Str::startsWith(Route::currentRouteName(), 'profile') ? 'bg-primary text-white rounded' : '' }}" href="{{ route('profile.index') }}">
-                <i class="bi bi-person-fill p-2"></i>
-                Manage Profile
-            </a>
-            </li>
-
             <li class="nav-item py-1">
                 <a class="nav-link {{ Str::startsWith(Route::currentRouteName(), 'employee_clearance') ? 'bg-primary text-white rounded' : '' }}" href="{{ route('employee_clearance.index') }}">
                     <i class="bi bi-file-earmark-fill p-2"></i>
@@ -73,8 +67,8 @@
         <!-- For employee -->
 
         <li class="nav-item py-1">
-            <a class="nav-link" href="{{route('users.change_password')}}" onclick="">         
-                <i class="bi bi-award-fill p-2"></i> 
+            <a class="nav-link {{ Str::startsWith(Route::currentRouteName(), 'change_password') ? 'bg-primary text-white rounded' : '' }}" href="{{route('change_password')}}" onclick="">         
+                <i class="bi bi-key-fill p-2"></i>
                 Change password
             </a>
         </li>
