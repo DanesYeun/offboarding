@@ -15,14 +15,14 @@ return new class extends Migration
             $table->id(); 
             $table->unsignedBigInteger('request_id'); 
             $table->unsignedInteger('seqno');
-            $table->unsignedBigInteger('clearing_official_user_id'); 
+            $table->unsignedInteger('clearing_official_id'); 
             $table->string('comment', 255)->nullable(); 
             $table->tinyInteger('isApproved')->default(0); 
             $table->timestamps(); 
     
             // Foreign key constraints
             $table->foreign('request_id')->references('id')->on('clearance_requests')->onDelete('cascade');
-            $table->foreign('clearing_official_user_id')->references('id')->on('users')->onDelete('cascade');
+            $table->foreign('clearing_official_id')->references('id')->on('sub_roles')->onDelete('cascade'); 
         });
     }
 

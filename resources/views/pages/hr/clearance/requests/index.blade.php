@@ -23,7 +23,7 @@
                 </a>
             </li>
         </ul>
-        <x-clearance-requests-table label="Requests" :datas="$requests"/>
+        <x-clearance-hr-requests-table label="Requests" :datas="$requests"/>
     </div>
 @endsection
 
