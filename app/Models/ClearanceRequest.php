@@ -8,7 +8,7 @@ class ClearanceRequest extends Model
 {
     protected $table = 'clearance_requests';
 
-    protected $fillable = ['user_id', 'clearance_id', 'purpose', 'attachment_file_path', 'remarks', 'status']; 
+    protected $fillable = ['user_id', 'clearance_id', 'purpose', 'attachment_file_path', 'remarks', 'status', 'generated_coe_path']; 
 
     public function user()
     {

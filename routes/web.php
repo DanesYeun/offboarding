@@ -52,7 +52,8 @@ Route::post('add-comment/{id}', [ClearanceController::class , 'comment'])->name(
 
 Route::get('requests',[RequestController::class, 'index'])->name('request.index');
 Route::post('request-status/{id}',[RequestController::class, 'update_status'])->name('request.status');
-
+Route::get('certificate-of-employment',[RequestController::class, 'certificate_of_employment'])->name('request.coe');
+Route::post('generate-certificate-of-employment/{id}',[RequestController::class, 'generate_certificate_of_employment'])->name('request.generate.coe');
 
 Route::get('profile', [ProfileController::class, 'index'])->name('profile.index');
 Route::post('update-profile/{id}', [ProfileController::class, 'update'])->name('profile.update');

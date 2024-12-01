@@ -42,7 +42,7 @@ class AppServiceProvider extends ServiceProvider
         });
 
         View::composer('*', function ($view) {
-            $count_completed_requests = ClearanceRequest::where('status', 5)->count();
+            $count_completed_requests = ClearanceRequest::where('status', 5)->whereNull('generated_coe_path')->count();
             $view->with('count_completed_requests', $count_completed_requests);
         });
     }
