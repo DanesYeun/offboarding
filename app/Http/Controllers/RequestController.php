@@ -11,7 +11,7 @@ class RequestController extends Controller
 {
     public function index(){
 
-        $requests = ClearanceRequest::with(['user','clearance_purpose', 'statusDesc', 'clearance.employment_type_desc', 'clearance_approvals','clearance_approvals.user.subrole'])->orderBy('status', 'ASC')->orderBy('created_at', 'DESC')->get();
+        $requests = ClearanceRequest::with(['user','clearance_purpose', 'statusDesc', 'clearance.employment_type_desc', 'clearance_approvals','clearance_approvals.sub_role'])->orderBy('status', 'ASC')->orderBy('created_at', 'DESC')->get();
        
        
         // dd(json_decode($requests));
@@ -41,7 +41,7 @@ class RequestController extends Controller
                         ClearanceApproval::create([
                             'request_id' => $id,
                             'seqno' => $official->seqno,
-                            'clearing_official_user_id' => $official->clearing_official,
+                            'clearing_official_id' => $official->clearing_official,
                             'comment' => null,
                             'isApproved' => 0
                         ]);
