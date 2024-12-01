@@ -23,9 +23,6 @@
                     @if($count_new_requests > 0)
                         <span class="badge bg-warning ms-2">{{ $count_new_requests }}</span>
                     @endif
-                    @if($count_completed_requests > 0)
-                        <span class="badge bg-success ms-2">{{ $count_completed_requests }}</span>
-                    @endif
                 </a>
             </li>
         </ul>

@@ -11,8 +11,10 @@ class RequestController extends Controller
 {
     public function index(){
 
-        $requests = ClearanceRequest::with(['user','employmentType','clearance_purpose', 'statusDesc'])->orderBy('status', 'ASC')->orderBy('created_at', 'DESC')->get();
-
+        $requests = ClearanceRequest::with(['user','clearance_purpose', 'statusDesc', 'clearance.employment_type_desc', 'clearance_approvals','clearance_approvals.user.subrole'])->orderBy('status', 'ASC')->orderBy('created_at', 'DESC')->get();
+       
+       
+        // dd(json_decode($requests));
         return view('pages.hr.clearance.requests.index', compact('requests'));
     }
 
@@ -20,12 +22,14 @@ class RequestController extends Controller
 
         try {
             $status = $request->input('status');  
-            $clearance_request = ClearanceRequest::find($id);
+            $clearance_request = ClearanceRequest::with(['clearance.employment_type_desc'])->find($id);
+
             if ($status == 'approved') {
 
                 $clearance_request->update(['status' => 2]);
                 
-                $clearance = Clearance::with(['officials'])->where('employment_type', $clearance_request->employment_type)->first();
+                $clearance = Clearance::with(['officials'])->where('id', $clearance_request->clearance_id)->first();
+                // dd(json_decode($clearance));
                 $officials = $clearance->officials;
 
                 if(!empty($officials)){
@@ -36,10 +40,8 @@ class RequestController extends Controller
 
                         ClearanceApproval::create([
                             'request_id' => $id,
-                            'clearance_id' => $clearance->id,
-                            'employee_type' => $clearance_request->employment_type,
                             'seqno' => $official->seqno,
-                            'clearing_official_user_id' => $clearance_request->user_id,
+                            'clearing_official_user_id' => $official->clearing_official,
                             'comment' => null,
                             'isApproved' => 0
                         ]);

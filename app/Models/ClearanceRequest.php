@@ -8,16 +8,11 @@ class ClearanceRequest extends Model
 {
     protected $table = 'clearance_requests';
 
-    protected $fillable = ['user_id', 'employment_type', 'purpose', 'attachment_file_path', 'remarks', 'status']; 
+    protected $fillable = ['user_id', 'clearance_id', 'purpose', 'attachment_file_path', 'remarks', 'status']; 
 
     public function user()
     {
         return $this->belongsTo(User::class, 'user_id');
-    }
-
-    public function employmentType()
-    {
-        return $this->belongsTo(EmploymentType::class, 'employment_type');
     }
 
     public function clearance_purpose()
@@ -32,5 +27,15 @@ class ClearanceRequest extends Model
 
     public function comment_request(){
         return $this->hasMany(Comment::class ,'clearance_requests_id','id')->latest();
+    }
+
+    public function clearance()
+    {
+        return $this->belongsTo(Clearance::class, 'clearance_id', 'id');
+    }
+
+    public function clearance_approvals()
+    {
+        return $this->hasMany(ClearanceApproval::class, 'request_id', 'id');
     }
 }

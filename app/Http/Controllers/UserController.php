@@ -26,7 +26,7 @@ class UserController extends Controller
         $roles = map_options(Role::class, 'id', 'name');
 
         //1:1 subrole, exclude active subrole
-        $excludedSubRoles = User::where('status', 1)->pluck('sub_role')->toArray();
+        $excludedSubRoles = User::where('status', 1) ->whereNotNull('sub_role')->pluck('sub_role')->toArray();
 
         $subroles = SubRole::whereNotIn('id', $excludedSubRoles)->get()->map(function ($subrole) {
             return [
@@ -98,7 +98,16 @@ class UserController extends Controller
         $userDetails = User::find($id);
 
         $roles = map_options(Role::class, 'id', 'name');
-        $subroles = map_options(SubRole::class, 'id', 'description');
+
+        $excludedSubRoles = User::where('status', 1) ->whereNotNull('sub_role')->pluck('sub_role')->toArray();
+        // dd($excludedSubRoles);
+        $subroles = SubRole::whereNotIn('id', $excludedSubRoles)->get()->map(function ($subrole) {
+            return [
+                'id' => $subrole->id,
+                'name' => $subrole->description,
+            ];
+        });
+        // $subroles = map_options(SubRole::class, 'id', 'description');
 
         if ($userDetails) {
             return view('pages.hr.users.edit', compact('userDetails', 'roles', 'subroles'));

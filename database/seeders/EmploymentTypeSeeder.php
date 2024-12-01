@@ -14,9 +14,8 @@ class EmploymentTypeSeeder extends Seeder
     public function run(): void
     {
         $employment_types = [
-            'Regular',
-            'Part-Time',
-            'Job Order'
+            'Teaching Clearance',
+            'Non-Teaching Clearance'
         ];
 
         foreach ($employment_types as $employment_type)

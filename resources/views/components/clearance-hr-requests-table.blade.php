@@ -17,7 +17,6 @@
                     <th scope="col" class="p-3 bg-primary text-white">Clearance</th>
                     <th scope="col" class="p-3 bg-primary text-white">Purpose</th>
                     <th scope="col" class="p-3 bg-primary text-white">Date Requested</th>
-                    <th scope="col" class="p-3 bg-primary text-white">Comment</th>
                     <th scope="col" class="p-3 bg-primary text-white">Status</th>
                     <th scope="col" class="p-3 bg-primary text-white">Action</th>
                 </tr>
@@ -28,10 +27,12 @@
 
                     @php
                         $statusClass = match($data->statusDesc->description) {
-                            'Disapproved' => 'text-bg-danger',
                             'Pending' => 'text-bg-warning', 
+                            'Verified' => 'text-bg-secondary',
+                            'Approved' => 'text-bg-primary',
+                            'Pending Questionnaire' => 'text-bg-info',
                             'Completed' => 'text-bg-success',
-                            default => 'text-bg-secondary',
+                            'Disapproved' => 'text-bg-danger',
                         };
 
                         $isDisabled = $data->status != 1 ? 'disabled' : '';
@@ -41,9 +42,14 @@
                         <td class="p-3 d-none d-sm-table-cell">{{ $data->clearance->employment_type_desc->description }}</td>
                         <td class="p-3 d-none d-sm-table-cell">{{ $data->clearance_purpose->description }}</td>
                         <td class="p-3 d-none d-sm-table-cell">{{ \Carbon\Carbon::parse($data->created_at)->toFormattedDateString() }}</td>
-                        <td class="p-3 d-none d-sm-table-cell">{{ isset($data->comment_request) ? $data->comment_request[0]->comment : ''}}</td>
                         <td class="p-3">
-                            <small class="badge rounded-pill {{ $statusClass }}">{{ $data->statusDesc->description }}</small>
+                            <small class="badge rounded-pill {{ $statusClass }}">
+                                {{ $data->statusDesc->description }}
+                                @if($data->status == 3 && $data->clearance_approvals->isNotEmpty())
+                                    {{-- Fetch the first approval's subrole description --}}
+                                    - {{ $data->clearance_approvals->first()->user->subrole->description ?? 'N/A' }}
+                                @endif
+                            </small>
                         </td>
                         <td class="p-3">
                             <button type="button" class="btn btn-sm btn-secondary text-white" data-bs-toggle="modal" data-bs-target="#viewModal{{ $data->id }}">
@@ -82,22 +88,6 @@
                                                 @endif
                                             </div>
                                         </div>
-                                        {{-- Comment add --}}
-                                        <form action="{{ route('clearance.comment', ['id' => $data->id]) }}" method="POST" style="display: inline;">
-                                            @csrf
-                                            <input type="hidden" name="user_id" value="{{$data->user_id}}">
-                                            <input type="hidden" name="is_comply" value="0">
-                                           
-                                            <x-textarea label="Comments" :datas="[]"  name="comment"/>
-                                            {{-- user_id --}}
-                                            @if(Auth::user()->role_id == 1)
-                                                <button type="submit" class="btn btn-sm btn-success my-2">
-                                                    <span class="d-none d-sm-inline">Comment</span>
-                                                </button>
-                                            @endif
-                                            {{-- <x-input label="Comments" :datas="[]" type="text" name="test"/> --}}
-                                        </form>
-                                       
                                     </div>
                         
                                 </div>
