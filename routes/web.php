@@ -46,6 +46,7 @@ Route::get('clearances',[ClearanceController::class, 'index'])->name('clearance.
 Route::post('clearance-store',[ClearanceController::class, 'store'])->name('clearance.store');
 Route::get('clearance-details/{id}',[ClearanceController::class, 'details'])->name('clearance.details');
 Route::post('clearance-update/{id}',[ClearanceController::class, 'update'])->name('clearance.update');
+Route::post('add-comment/{id}', [ClearanceController::class , 'comment'])->name('clearance.comment');
 
 Route::get('requests',[RequestController::class, 'index'])->name('request.index');
 Route::post('request-status/{id}',[RequestController::class, 'update_status'])->name('request.status');

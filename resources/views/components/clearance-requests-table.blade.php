@@ -17,11 +17,13 @@
                     <th scope="col" class="p-3 bg-primary text-white">Clearance</th>
                     <th scope="col" class="p-3 bg-primary text-white">Purpose</th>
                     <th scope="col" class="p-3 bg-primary text-white">Date Requested</th>
+                    <th scope="col" class="p-3 bg-primary text-white">Comment</th>
                     <th scope="col" class="p-3 bg-primary text-white">Status</th>
                     <th scope="col" class="p-3 bg-primary text-white">Action</th>
                 </tr>
             </thead>
             <tbody id="tableBody">
+             
                 @foreach($datas as $data)
 
                     @php
@@ -39,6 +41,7 @@
                         <td class="p-3 d-none d-sm-table-cell">{{ $data->employmentType->description }}</td>
                         <td class="p-3 d-none d-sm-table-cell">{{ $data->clearance_purpose->description }}</td>
                         <td class="p-3 d-none d-sm-table-cell">{{ \Carbon\Carbon::parse($data->created_at)->toFormattedDateString() }}</td>
+                        <td class="p-3 d-none d-sm-table-cell">{{ $data->comment_request[0]->comment }}</td>
                         <td class="p-3">
                             <small class="badge rounded-pill {{ $statusClass }}">{{ $data->statusDesc->description }}</small>
                         </td>
@@ -79,6 +82,20 @@
                                                 @endif
                                             </div>
                                         </div>
+                                        {{-- Comment add --}}
+                                        <form action="{{ route('clearance.comment', ['id' => $data->id]) }}" method="POST" style="display: inline;">
+                                            @csrf
+                                            <input type="hidden" name="user_id" value="{{$data->user_id}}">
+                                            <input type="hidden" name="is_comply" value="0">
+                                           
+                                            <x-textarea label="Comments" :datas="[]"  name="comment"/>
+                                            {{-- user_id --}}
+                                            <button type="submit" class="btn btn-sm btn-success my-2">
+                                                <span class="d-none d-sm-inline">Comment</span>
+                                            </button>
+                                            {{-- <x-input label="Comments" :datas="[]" type="text" name="test"/> --}}
+                                        </form>
+                                       
                                     </div>
                         
                                 </div>

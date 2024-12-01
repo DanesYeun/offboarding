@@ -29,4 +29,8 @@ class ClearanceRequest extends Model
     {
         return $this->belongsTo(Status::class, 'status');
     }
+
+    public function comment_request(){
+        return $this->hasMany(Comment::class ,'clearance_requests_id','id')->latest();
+    }
 }
