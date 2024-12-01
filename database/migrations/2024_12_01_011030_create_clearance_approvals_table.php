@@ -22,8 +22,6 @@ return new class extends Migration
     
             // Foreign key constraints
             $table->foreign('request_id')->references('id')->on('clearance_requests')->onDelete('cascade');
-            $table->foreign('clearance_id')->references('id')->on('clearance')->onDelete('cascade');
-            $table->foreign('employee_type')->references('id')->on('employment_types')->onDelete('cascade');
             $table->foreign('clearing_official_user_id')->references('id')->on('users')->onDelete('cascade');
         });
     }
