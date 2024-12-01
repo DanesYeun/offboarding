@@ -35,7 +35,7 @@ class AuthController extends Controller
             switch($user->role_id){
                 case 1:   return  redirect()->intended(route('users.index'));
                 break;
-                case 2:   return  redirect()->intended(route('official_dashboard'));
+                case 2:   return  redirect()->intended(route('official_requests.index'));
                 break;
                 case 3:   return  redirect()->intended(route('profile.index'));
                 break;

@@ -12,7 +12,7 @@
 
         <ul class="nav nav-tabs mb-3">
             <li class="nav-item">
-                <a class="nav-link" aria-current="page" href="{{route('clearance.index')}}">Clearance Form</a>
+                <a class="nav-link" href="{{route('clearance.index')}}">Clearance Form</a>
             </li>
             <li class="nav-item">
                 <a class="nav-link active" href="{{route('request.index')}}">

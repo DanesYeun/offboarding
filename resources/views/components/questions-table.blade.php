@@ -17,7 +17,7 @@
                 @foreach($datas as $data)
                     <tr>
                         <td class="p-3">{{ $data->id }}</td>
-                        <td class="p-3">{{ $data->firstname }} {{ $data->lastname }}</td>
+                        <td class="p-3">{{ $data->question }}</td>
                         <td class="p-3">
                             <a class="btn btn-sm btn-secondary text-white" href="{{ route('users.details', ['id' => $data->id]) }}">
                                 <i class="bi bi-pencil-square"></i>
@@ -26,7 +26,7 @@
                                 @csrf
                                 <button type="submit" class="btn btn-sm btn-danger my-2">
                                     <i class="bi bi-exclamation-circle"></i>
-                                    <span class="d-none d-sm-inline">Disable</span>
+                                    <span class="d-none d-sm-inline">Delete</span>
                                 </button>
                             </form>
                         </td>

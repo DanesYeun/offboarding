@@ -1,11 +1,8 @@
 @extends('layouts.layout')
 
 @section('content')
+    <x-toast />
     <div class="d-flex flex-column m-md-2">
-        <!-- DElete this, if naa na backend -->
-        @php
-            $users = [];
-        @endphp
         <h2 class="text-primary text-start">
             Manage Quetionnaire
         </h2>
@@ -28,10 +25,10 @@
 
                 <div id="collapseOne" class="accordion-collapse collapse" data-bs-parent="#accordionExample">
                     <div class="accordion-body">
-                        <form method="post" id="clearance-form" action="#" class="needs-validation" novalidate>
+                        <form method="post" id="clearance-form" action="{{ route('hr_questionnaire.store') }}" class="needs-validation" novalidate>
                             @csrf
                             <div class="container row">  
-                                <x-textarea label="Question" name="question"/>
+                                <x-textarea label="Question" name="question" required="true"/>
 
                                 <div class="d-flex justify-content-end">   
                                     <button type="submit" class="btn btn-success">
@@ -46,9 +43,23 @@
             </div>
         </div>
 
-        <x-questions-table label="Questions" :datas="$users"/>
+        <x-questions-table label="Questions" :datas="$questions"/>
     </div>
 @endsection
 
 @section('js')
+    <script src="{{ asset('js/formValidation.js') }}"></script>
+    <script>
+        // Clear any leading/trailing whitespace in the textarea when the page loads
+        window.addEventListener('DOMContentLoaded', (event) => {
+            const textarea = document.getElementById('question');
+            if (textarea) {
+                // Trim whitespace and reset the value if needed
+                textarea.value = textarea.value.trim();
+
+                // Log the trimmed value to check
+                console.log('Trimmed value of the textarea:', textarea.value);
+            }
+        });
+    </script>
 @endsection
