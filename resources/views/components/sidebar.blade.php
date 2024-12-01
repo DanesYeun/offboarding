@@ -28,6 +28,9 @@
                 <a class="nav-link bg-light rounded" href="#">
                     <i class="bi bi-award-fill p-2"></i>
                     Generate COE
+                    @if($count_completed_requests > 0)
+                        <span class="badge bg-success ms-2">{{ $count_completed_requests }}</span>
+                    @endif
                 </a>
             </li>
         @endif

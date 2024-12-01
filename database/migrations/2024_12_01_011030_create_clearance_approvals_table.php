@@ -14,8 +14,6 @@ return new class extends Migration
         Schema::create('clearance_approvals', function (Blueprint $table) {
             $table->id(); 
             $table->unsignedBigInteger('request_id'); 
-            $table->unsignedInteger('clearance_id');
-            $table->unsignedBigInteger('employee_type'); 
             $table->unsignedInteger('seqno');
             $table->unsignedBigInteger('clearing_official_user_id'); 
             $table->string('comment', 255)->nullable(); 

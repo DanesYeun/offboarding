@@ -15,15 +15,15 @@ return new class extends Migration
             $table->id();
 
             $table->bigInteger('user_id')->unsigned();
-            $table->bigInteger('employment_type')->unsigned();
-            $table->unsignedInteger('purpose')->unsigned();
+            $table->unsignedInteger('clearance_id');
+            $table->unsignedInteger('purpose');
             $table->string('attachment_file_path');
             $table->text('remarks')->nullable();
             $table->bigInteger('status')->unsigned();
             $table->timestamps();
 
             $table->foreign('user_id')->references('id')->on('users')->onDelete('cascade');
-            $table->foreign('employment_type')->references('id')->on('employment_types')->onDelete('cascade');
+            $table->foreign('clearance_id')->references('id')->on('clearance')->onDelete('cascade');
             $table->foreign('purpose')->references('id')->on('clearance_purpose')->onDelete('cascade');
             $table->foreign('status')->references('id')->on('statuses')->onDelete('cascade');
         });

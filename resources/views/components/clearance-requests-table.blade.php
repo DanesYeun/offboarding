@@ -23,13 +23,24 @@
             </thead>
             <tbody id="tableBody">
                 @foreach($datas as $data)
+
+                    @php
+                        $statusClass = match($data->statusDesc->description) {
+                            'Disapproved' => 'text-bg-danger',
+                            'Pending' => 'text-bg-warning', 
+                            'Completed' => 'text-bg-success',
+                            default => 'text-bg-secondary',
+                        };
+
+                        $isDisabled = $data->status != 1 ? 'disabled' : '';
+                    @endphp
                     <tr>
                         <td class="p-3">{{ $data->firstname }} {{ $data->user->name }}</td>
                         <td class="p-3 d-none d-sm-table-cell">{{ $data->employmentType->description }}</td>
                         <td class="p-3 d-none d-sm-table-cell">{{ $data->clearance_purpose->description }}</td>
                         <td class="p-3 d-none d-sm-table-cell">{{ \Carbon\Carbon::parse($data->created_at)->toFormattedDateString() }}</td>
                         <td class="p-3">
-                            <small class="badge rounded-pill text-bg-success">{{ $data->statusDesc->description }}</small>
+                            <small class="badge rounded-pill {{ $statusClass }}">{{ $data->statusDesc->description }}</small>
                         </td>
                         <td class="p-3">
                             <button type="button" class="btn btn-sm btn-secondary text-white" data-bs-toggle="modal" data-bs-target="#viewModal{{ $data->id }}">
@@ -60,7 +71,7 @@
                                                     <input type="text" class="form-control" id="attachment" value="{{ basename($data->attachment_file_path) }}" readonly>
                                                     <div class="input-group-append">
                                                         <a href="{{ asset('storage/' . $data->attachment_file_path) }}" target="_blank" class="btn btn-outline-primary">
-                                                            View File
+                                                            View Attachment
                                                         </a>
                                                     </div>
                                                 @else
@@ -76,7 +87,7 @@
                                     <form action="{{ route('request.status', ['id' => $data->id]) }}" method="POST" style="display: inline;">
                                         @csrf
                                         <input type="hidden" name="status" value="approved">
-                                        <button type="submit" class="btn btn-sm btn-success my-2">
+                                        <button type="submit" class="btn btn-sm btn-success my-2" {{ $isDisabled }}>
                                             <span class="d-none d-sm-inline">Approve</span>
                                         </button>
                                     </form>
@@ -85,7 +96,7 @@
                                     <form action="{{ route('request.status', ['id' => $data->id]) }}" method="POST" style="display: inline;">
                                         @csrf
                                         <input type="hidden" name="status" value="disapproved">
-                                        <button type="submit" class="btn btn-sm btn-danger my-2">
+                                        <button type="submit" class="btn btn-sm btn-danger my-2" {{ $isDisabled }}>
                                             <span class="d-none d-sm-inline">Disapprove</span>
                                         </button>
                                     </form>
@@ -110,7 +121,7 @@
 <script>
     document.addEventListener("DOMContentLoaded", function() {
         const data = @json($datas); 
-        paginateTable('clearance-requests-table', data, 5);
+        paginateTable('clearance-requests-table', data, 10);
         document.getElementById("searchInput").addEventListener("input", function() {
             searchTable("searchInput", "clearance-requests-table");
         });

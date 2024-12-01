@@ -40,5 +40,10 @@ class AppServiceProvider extends ServiceProvider
             $count_new_requests = ClearanceRequest::where('status', 1)->count();
             $view->with('count_new_requests', $count_new_requests);
         });
+
+        View::composer('*', function ($view) {
+            $count_completed_requests = ClearanceRequest::where('status', 5)->count();
+            $view->with('count_completed_requests', $count_completed_requests);
+        });
     }
 }

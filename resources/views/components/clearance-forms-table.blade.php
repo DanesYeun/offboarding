@@ -11,7 +11,7 @@
                     <th scope="col" class="p-3 bg-primary text-white">ID</th>
                     <th scope="col" class="p-3 bg-primary text-white">Type of Form</th>
                     <th scope="col" class="p-3 bg-primary text-white">Statement</th>
-                    <th scope="col" class="p-3 bg-primary text-white">&nbsp;</th>
+                    <th scope="col" class="p-3 bg-primary text-white">Action</th>
                 </tr>
             </thead>
             <tbody id="tableBody">
