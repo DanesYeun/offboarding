@@ -90,7 +90,7 @@
                                            
                                             <x-textarea label="Comments" :datas="[]"  name="comment"/>
                                             {{-- user_id --}}
-                                            @if(Auth::user()->role_id == 1)
+                                            @if(Auth::user()->role_id == 2)
                                                 <button type="submit" class="btn btn-sm btn-success my-2">
                                                     <span class="d-none d-sm-inline">Comment</span>
                                                 </button>

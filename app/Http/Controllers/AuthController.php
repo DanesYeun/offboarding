@@ -65,7 +65,7 @@ class AuthController extends Controller
     }
     public function official_dashboard()
     {
-       $clearanceRequest= ClearanceRequest::with(['employmentType','clearance_purpose','statusDesc','comment_request'])->get();
+       $clearanceRequest= ClearanceRequest::with(['clearance_purpose','statusDesc','comment_request'])->get();
        
         return view('pages.official.request-clearance.index', compact('clearanceRequest'));
     }

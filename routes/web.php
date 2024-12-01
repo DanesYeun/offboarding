@@ -64,7 +64,7 @@ Route::get('COE', [EmployeeCOEController::class, 'index'])->name('employee_coe.i
 
 Route::post('send_email', [SendMailController::class, 'Send_email'])->name('send_email');
 
-Route::get('requests', [OfficialRequestController::class, 'index'])->name('official_requests.index');
+Route::get('clearance_requests', [OfficialRequestController::class, 'index'])->name('official_requests.index');
 
 Route::get('questionnaire', [QuestionnaireController::class, 'index'])->name('hr_questionnaire.index');
 Route::post('question-store', [QuestionnaireController::class, 'store'])->name('hr_questionnaire.store');
