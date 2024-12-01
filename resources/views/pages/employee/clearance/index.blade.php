@@ -3,7 +3,7 @@
 @section('content')
     <x-toast/>
     <div class="d-flex justify-content-center m-md-2"> 
-        @if(is_null($clearance_request))
+        @if(is_null($clearance_request) || in_array($clearance_request->status, [5,6]) )
             <div class="border rounded bg-white p-4 w-100 d-flex align-items-center">
                 <div class="col-12 text-start text-primary">
                     <h3 class="mb-3">Request Clearance Form</h3>
@@ -24,7 +24,7 @@
                 </div>      
             </div>
         @else
-            @if(in_array($clearance_request->status, [1,3]))
+            @if(in_array($clearance_request->status, [1]))
             <div class="border rounded bg-white p-4 w-100 d-flex align-items-center">
                 <div class="col-12 row m-0 text-start text-primary">
                     <div class="alert alert-info alert-dismissible fade show" role="alert">
@@ -65,9 +65,24 @@
             @else
             <div class="border rounded bg-white p-4 w-100 d-flex align-items-center">
                 <div class="col-12 row m-0 text-start text-primary">
-                    <h3 class="mb-3 col-12">Request Clearance</h3>
+                    <div class="d-flex justify-content-between">
+                        <h3>Request Clearance</h3>
+                        <div>
+                            @if(in_array($clearance_request->status, [1,2,3]))
+                                <span class="badge text-white rounded text-bg-info px-2">
+                                    <i class="bi bi-exclamation-circle-fill pl-2"></i>
+                                    In Progress
+                                </span>
+                            @elseif($clearance_request->status == 4)
+                                <span class="badge text-white rounded text-bg-warning pl-2">
+                                <i class="bi bi-exclamation-circle-fill p-2"></i>
+                                    Pending Questionnaire
+                                </span>
+                            @endif 
+                        </div>
+                    </div>    
                     <div class="col-md-4 col-12 mb-2">
-                        <div class="border p-2 rounded">
+                        <div class="border p-2 rounded mb-3">
                             <small><strong>Clearance Details</strong></small><br>
                             <small>
                                 <strong>Clearance Type:</strong><br>
@@ -84,6 +99,12 @@
                                 </a>
                             </small><br>
                         </div>
+                        <!-- $clearance_request->status == 4 MAO NI FINAL XDDDD -->
+                        @if ($clearance_request->status == 2)
+                            <div class="p-2 d-flex">
+                                <a href="{{ route('employee_clearance.questionnaire.index') }}" class="btn btn-success flex-fill">Proceed to Questionnaire</a>
+                            </div>
+                        @endif  
                     </div>
                     <div class="col-md-8 col-12">
                         @foreach ($clearance_approvals as $approval)

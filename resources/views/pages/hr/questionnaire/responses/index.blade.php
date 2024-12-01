@@ -1,53 +1,47 @@
 @extends('layouts.layout')
 
 @section('content')
-    <div class="d-flex flex-column m-md-2">
-        <!-- DElete this, if naa na backend -->
-        @php
-            $users = [];
-        @endphp
-        <h2 class="text-primary text-start">
-            Manage Quetionnaire
-        </h2>
+<div class="d-flex flex-column m-md-2">
+    <h2 class="text-primary text-start">
+        Manage Questionnaire
+    </h2>
 
-        <ul class="nav nav-tabs mb-3">
-            <li class="nav-item">
-                <a class="nav-link" aria-current="page" href="#">Questions</a>
-            </li>
-            <li class="nav-item">
-                <a class="nav-link active" href="#">Responses</a>
-            </li>
-        </ul>
+    <ul class="nav nav-tabs mb-3">
+        <li class="nav-item">
+            <a class="nav-link" href="{{ route('hr_questionnaire.index') }}">Questions</a>
+        </li>
+        <li class="nav-item">
+            <a class="nav-link active" aria-current="page" href="{{ route('hr_questionnaire.responses.index') }}">Responses</a>
+        </li>
+    </ul>
 
-        <div class="accordion" id="accordionExample">
+    <div class="accordion" id="accordionExample">
+        @foreach ($clearance_requests as $key => $clearance_request)
             <div class="accordion-item">
                 <h2 class="accordion-header">
-                    <button class="accordion-button text-primary" type="button" data-bs-toggle="collapse" data-bs-target="#collapseOne" aria-expanded="true" aria-controls="collapseOne">
-                        Name of the little shit
+                    <button class="accordion-button text-primary" type="button" data-bs-toggle="collapse" data-bs-target="#collapse{{ $key }}" aria-expanded="true" aria-controls="collapse{{ $key }}">
+                        {{ $clearance_request->user->name ?? 'Unknown User' }} <!-- Assuming clearance request has a user relationship -->
                     </button>
                 </h2>
 
-                <div id="collapseOne" class="accordion-collapse collapse" data-bs-parent="#accordionExample">
+                <div id="collapse{{ $key }}" class="accordion-collapse collapse" data-bs-parent="#accordionExample">
                     <div class="accordion-body">
-                        <div class="container row"> 
-                            @php
-                                // referencing might change later, pero 1 accordion per tao ta
-                                $responses = [
-                                    ['question' => 'Lorem ipsum dolor sit.', 'answer' => 'Lorem ipsum dolor sit amet consectetur adipisicing elit. Repudiandae aliquid esse voluptate eius distinctio odio!'],
-                                    ['question' => 'Lorem ipsum dolor sit.', 'answer' => 'Lorem ipsum dolor sit amet consectetur adipisicing elit. Repudiandae aliquid esse voluptate eius distinctio odio!'],]   
-                            @endphp
-                            @foreach ($responses as $response)
+                        <div class="container row">
+                            @foreach ($clearance_request->responses as $response)
                                 <div class="text-start">
-                                    {{ $response['question'] }}
+                                    <!-- Check if question exists before trying to access its text -->
+                                    <strong>{{ $response->question ? $response->question->question : 'Question not found' }}</strong>
                                 </div>
-                                <strong class="text-start">Answer: </strong><p class="text-start">{{ $response['answer'] }}</p>
+                                <strong class="text-start">Answer: </strong>
+                                <p class="text-start">{{ $response->response }}</p> <!-- Assuming the answer is stored in 'response' column -->
                             @endforeach
                         </div>
                     </div>
                 </div>
             </div>
-        </div>
+        @endforeach
     </div>
+</div>
 @endsection
 
 @section('js')

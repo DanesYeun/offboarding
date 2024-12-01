@@ -9,10 +9,10 @@
 
         <ul class="nav nav-tabs mb-3">
             <li class="nav-item">
-                <a class="nav-link active" aria-current="page" href="#">Questions</a>
+                <a class="nav-link active" aria-current="page" href="{{ route('hr_questionnaire.index') }}">Questions</a>
             </li>
             <li class="nav-item">
-                <a class="nav-link" href="#">Responses</a>
+                <a class="nav-link" href="{{ route('hr_questionnaire.responses.index') }}">Responses</a>
             </li>
         </ul>
         <div class="accordion" id="accordionExample">
