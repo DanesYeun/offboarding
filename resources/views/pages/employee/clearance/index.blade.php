@@ -31,15 +31,15 @@
                         <i class="bi bi-info-circle-fill"></i>
                         Your request is has been submitted and is under review!
                     </div>
-                    @foreach ($employment_desc as $item)
+                  
                     <div class="col-12 border rounded p-3">
                         <h5 class="d-flex justify-content-between">
                             <div>Request Details</div>
                             <small>{{ $clearance_request->created_at->diffForHumans() }}</small>
                         </h5>
-                        
+                        @foreach ($employment_desc as $item)
                         <p class="m-0"><strong>Employment Type: </strong> {{$item->employment_type_desc->description}}</p>
-                       
+                        @endforeach
                        
                         
                         <p class="m-0"><strong>Purpose: </strong> {{$clearance_request->clearance_purpose->description}}</p>
@@ -62,7 +62,7 @@
                             @endif     
                         </p>
                     </div>
-                    @endforeach
+                   
                 </div>
             </div>
             @else
