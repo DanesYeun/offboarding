@@ -1,10 +1,12 @@
 <?php
 
 use App\Http\Controllers\EmployeeCOEController;
+use App\Http\Controllers\EmployeeQuestionnareController;
 use App\Http\Controllers\ProfileController;
 use App\Http\Controllers\EmployeeRequestClearanceController;
 use App\Http\Controllers\OfficialRequestController;
 use App\Http\Controllers\QuestionnaireController;
+use App\Http\Controllers\ResponsesController;
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\LoginController;
 use App\Http\Controllers\RegisterController;
@@ -79,6 +81,11 @@ Route::middleware('auth')->group(function () {
     // generate COE
     Route::get('certificate-of-employment',[RequestController::class, 'certificate_of_employment'])->name('request.coe');
     Route::post('generate-certificate-of-employment/{id}',[RequestController::class, 'generate_certificate_of_employment'])->name('request.generate.coe');
+
+    Route::get('qna', [EmployeeQuestionnareController::class, 'index'])->name('employee_clearance.questionnaire.index');
+    Route::post('qna-store/{id}', [EmployeeQuestionnareController::class, 'store'])->name('employee_clearance.questionnaire.store');
+
+    Route::get('responses', [ResponsesController::class, 'index'])->name('hr_questionnaire.responses.index');
 });
 
 // Logout
