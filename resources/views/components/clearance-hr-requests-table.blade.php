@@ -43,13 +43,18 @@
                         <td class="p-3 d-none d-sm-table-cell">{{ $data->clearance_purpose->description }}</td>
                         <td class="p-3 d-none d-sm-table-cell">{{ \Carbon\Carbon::parse($data->created_at)->toFormattedDateString() }}</td>
                         <td class="p-3">
-                            <small class="badge rounded-pill {{ $statusClass }}">
-                                {{ $data->statusDesc->description }}
-                                @if($data->status == 3 && $data->clearance_approvals->isNotEmpty())
-                                    {{-- Fetch the first approval's subrole description --}}
-                                    - {{ $data->clearance_approvals->first()->user->subrole->description ?? 'N/A' }}
-                                @endif
-                            </small>
+                                <small class="badge rounded-pill {{ $statusClass }}">
+                                    {{ $data->statusDesc->description }}
+                                    @if($data->status == 3 && $data->clearance_approvals->isNotEmpty())
+                                        @php
+                                            // Find the last record where isApproved is 1
+                                            $lastApproved = $data->clearance_approvals->filter(fn($approval) => $approval->isApproved == 1)->last();
+                                        @endphp
+                                        @if($lastApproved && $lastApproved->sub_role)
+                                            - {{ $lastApproved->sub_role->description ?? '' }}
+                                        @endif
+                                    @endif
+                                </small>
                         </td>
                         <td class="p-3">
                             <button type="button" class="btn btn-sm btn-secondary text-white" data-bs-toggle="modal" data-bs-target="#viewModal{{ $data->id }}">

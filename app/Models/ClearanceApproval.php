@@ -13,13 +13,13 @@ class ClearanceApproval extends Model
     protected $fillable = [
         'request_id',
         'seqno',
-        'clearing_official_user_id',
+        'clearing_official_id',
         'comment',
         'isApproved'
     ]; 
 
-    public function user()
+    public function sub_role()
     {
-        return $this->belongsTo(User::class, 'clearing_official_user_id', 'id');
+        return $this->belongsTo(SubRole::class, 'clearing_official_id', 'id');
     }
 }
