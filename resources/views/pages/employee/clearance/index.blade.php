@@ -31,7 +31,7 @@
                         <i class="bi bi-info-circle-fill"></i>
                         Your request is has been submitted and is under review!
                     </div>
-                    <div class="col-12 border rounded p-2">
+                    <div class="col-12 border rounded p-3">
                         <h5 class="d-flex justify-content-between">
                             <div>Request Details</div>
                             <small>{{ $clearance_request->created_at->diffForHumans() }}</small>
@@ -43,7 +43,6 @@
                                 {{ basename($clearance_request->attachment_file_path) }}
                             </a>
                         </p>
-                        <p class="m-0"><strong>Remarks: </strong> {{$clearance_request->remarks}}</p>
                         <p class="m-0">
                             @if ($clearance_request->status == 1)
                                 <span class="badge text-white rounded-pill text-bg-warning px-2">

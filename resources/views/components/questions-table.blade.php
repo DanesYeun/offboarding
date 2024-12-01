@@ -10,23 +10,23 @@
                 <tr>
                     <th scope="col" class="p-3 bg-primary text-white">ID</th>
                     <th scope="col" class="p-3 bg-primary text-white">Question</th>
-                    <th scope="col" class="p-3 bg-primary text-white">Action</th>
+                    <th scope="col" class="p-3 bg-primary text-white"></th>
                 </tr>
             </thead>
             <tbody id="tableBody">
                 @foreach($datas as $data)
                     <tr>
                         <td class="p-3">{{ $data->id }}</td>
-                        <td class="p-3">{{ $data->firstname }} {{ $data->lastname }}</td>
+                        <td class="p-3">{{ $data->question }}</td>
                         <td class="p-3">
-                            <a class="btn btn-sm btn-secondary text-white" href="{{ route('users.details', ['id' => $data->id]) }}">
+                            <a class="btn btn-sm btn-secondary text-white" href="javascript:void(0)" onclick="editQuestion({{ $data->id }}, '{{ $data->question }}')">
                                 <i class="bi bi-pencil-square"></i>
                             </a>
-                            <form action="{{ route('users.disable', ['id' => $data->id]) }}" method="POST" style="display: inline;">
+                            <form action="{{ route('hr_questionnaire.delete', $data->id) }}" method="POST" style="display: inline;">
                                 @csrf
                                 <button type="submit" class="btn btn-sm btn-danger my-2">
                                     <i class="bi bi-exclamation-circle"></i>
-                                    <span class="d-none d-sm-inline">Disable</span>
+                                    <span class="d-none d-sm-inline">Delete</span>
                                 </button>
                             </form>
                         </td>
@@ -46,6 +46,21 @@
 <script src="{{ asset('js/pagination.js') }}"></script>
  {{-- for pagination --}}
 <script>
+    function editQuestion(id, question) {
+        var accordion = new bootstrap.Collapse(document.getElementById('collapseOne'), {
+            toggle: true
+        });
+
+        document.getElementById('question').value = question;
+        document.getElementById('question_id').value = id;
+
+        const form = document.getElementById('clearance-form');
+        form.action = `/questions/${id}`;
+        
+        const button = form.querySelector('button[type="submit"]');
+        button.innerHTML = '<i class="bi bi-floppy-fill p-2"></i> Update';
+    }
+
     document.addEventListener("DOMContentLoaded", function() {
         const data = @json($datas); 
         paginateTable('questions-table', data, 5);

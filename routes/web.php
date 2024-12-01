@@ -1,8 +1,10 @@
 <?php
 
 use App\Http\Controllers\EmployeeCOEController;
-use App\Http\Controllers\EmployeeProfileController;
+use App\Http\Controllers\ProfileController;
 use App\Http\Controllers\EmployeeRequestClearanceController;
+use App\Http\Controllers\OfficialRequestController;
+use App\Http\Controllers\QuestionnaireController;
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\LoginController;
 use App\Http\Controllers\RegisterController;
@@ -38,7 +40,7 @@ Route::post('add-user',[UserController::class, 'store'])->name('users.store');
 Route::get('user-details/{id}',[UserController::class, 'details'])->name('users.details');
 Route::post('update-user/{id}',[UserController::class, 'update'])->name('users.update');
 Route::post('disable-user/{id}',[UserController::class, 'disable'])->name('users.disable');
-Route::get('change_password',[UserController::class, 'change_password'])->name('users.change_password');
+Route::get('change_password',[UserController::class, 'change_password'])->name('change_password');
 Route::post('process_change_password',[UserController::class, 'process_change_password'])->name('users.process_change_password');
 
 
@@ -52,15 +54,21 @@ Route::get('requests',[RequestController::class, 'index'])->name('request.index'
 Route::post('request-status/{id}',[RequestController::class, 'update_status'])->name('request.status');
 
 
-Route::get('profile', [EmployeeProfileController::class, 'index'])->name('profile.index');
-Route::post('update-profile/{id}', [EmployeeProfileController::class, 'update'])->name('profile.update');
+Route::get('profile', [ProfileController::class, 'index'])->name('profile.index');
+Route::post('update-profile/{id}', [ProfileController::class, 'update'])->name('profile.update');
 
 Route::get('clearance', [EmployeeRequestClearanceController::class, 'index'])->name('employee_clearance.index');
 Route::post('sumbit-request', [EmployeeRequestClearanceController::class, 'store'])->name('employee_clearance.store');
 
 Route::get('COE', [EmployeeCOEController::class, 'index'])->name('employee_coe.index');
 
-Route::post('send_email', [SendMailController::class, 'Send_email'])->name('send_email');;
+Route::post('send_email', [SendMailController::class, 'Send_email'])->name('send_email');
 
+Route::get('requests', [OfficialRequestController::class, 'index'])->name('official_requests.index');
+
+Route::get('questionnaire', [QuestionnaireController::class, 'index'])->name('hr_questionnaire.index');
+Route::post('question-store', [QuestionnaireController::class, 'store'])->name('hr_questionnaire.store');
+Route::post('questions/{id}', [QuestionnaireController::class, 'update'])->name('hr_questionnaire.update');
+Route::post('questions/{id}', [QuestionnaireController::class, 'delete'])->name('hr_questionnaire.delete');
 
 
