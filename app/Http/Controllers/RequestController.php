@@ -45,7 +45,7 @@ class RequestController extends Controller
                             'seqno' => $official->seqno,
                             'clearing_official_id' => $official->clearing_official,
                             'comment' => null,
-                            'isApproved' => 0
+                            'isApproved' => 1
                         ]);
                     }
                 }

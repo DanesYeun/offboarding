@@ -41,7 +41,7 @@
                         <td class="p-3 d-none d-sm-table-cell">{{ $data->clearance->employment_type_desc->description }}</td>
                         <td class="p-3 d-none d-sm-table-cell">{{ $data->clearance_purpose->description }}</td>
                         <td class="p-3 d-none d-sm-table-cell">{{ \Carbon\Carbon::parse($data->created_at)->toFormattedDateString() }}</td>
-                        <td class="p-3 d-none d-sm-table-cell">{{ isset($data->comment_request) ? $data->comment_request[0]->comment : ''}}</td>
+                        <td class="p-3 d-none d-sm-table-cell">{{ $data->comment_request[0]->comment ?? 'No Comment'}}</td>
                         <td class="p-3">
                             <small class="badge rounded-pill {{ $statusClass }}">{{ $data->statusDesc->description }}</small>
                         </td>
@@ -90,7 +90,7 @@
                                            
                                             <x-textarea label="Comments" :datas="[]"  name="comment"/>
                                             {{-- user_id --}}
-                                            @if(Auth::user()->role_id == 1)
+                                            @if(Auth::user()->role_id == 2)
                                                 <button type="submit" class="btn btn-sm btn-success my-2">
                                                     <span class="d-none d-sm-inline">Comment</span>
                                                 </button>
