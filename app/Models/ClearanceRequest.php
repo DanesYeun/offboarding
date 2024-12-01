@@ -38,4 +38,8 @@ class ClearanceRequest extends Model
     {
         return $this->hasMany(ClearanceApproval::class, 'request_id', 'id');
     }
+    public function responses()
+    {
+        return $this->hasMany(Response::class);
+    }
 }

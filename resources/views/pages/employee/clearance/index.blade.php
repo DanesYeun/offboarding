@@ -3,13 +3,13 @@
 @section('content')
     <x-toast/>
     <div class="d-flex justify-content-center m-md-2"> 
-        @if(is_null($clearance_request))
+        @if(is_null($clearance_request) || in_array($clearance_request->status, [5,6]) )
             <div class="border rounded bg-white p-4 w-100 d-flex align-items-center">
                 <div class="col-12 text-start text-primary">
                     <h3 class="mb-3">Request Clearance Form</h3>
                     <form action="{{ route('employee_clearance.store') }}" method="post" class="needs-validation row m-0" noValidate enctype="multipart/form-data">
                         @csrf
-                        <x-select name="clearance_id" label="Employment Type" :options="$employment_types" required="true"/>
+                        <x-select name="clearance_id" label="Clearance Type" :options="$employment_types" required="true"/>
                         <x-select name="purpose" label="Purpose" :options="$purposes" required="true"/>
                         <x-input type="file" label="Upload File" name="attachment" required="true" mdSize="12"/>
                         
@@ -24,7 +24,7 @@
                 </div>      
             </div>
         @else
-            @if(in_array($clearance_request->status, [1,3]))
+            @if(in_array($clearance_request->status, [1]))
             <div class="border rounded bg-white p-4 w-100 d-flex align-items-center">
                 <div class="col-12 row m-0 text-start text-primary">
                     <div class="alert alert-info alert-dismissible fade show" role="alert">
@@ -37,11 +37,10 @@
                             <div>Request Details</div>
                             <small>{{ $clearance_request->created_at->diffForHumans() }}</small>
                         </h5>
-                        @foreach ($employment_desc as $item)
-                        <p class="m-0"><strong>Employment Type: </strong> {{$item->employment_type_desc->description}}</p>
-                        @endforeach
-                       
-                        
+                        <p class="m-0">
+                            <strong>Purpose: </strong> 
+                            {{$clearance_request->clearance->employment_type_desc->description}}
+                        </p>
                         <p class="m-0"><strong>Purpose: </strong> {{$clearance_request->clearance_purpose->description}}</p>
                         <p class="m-0"><strong>Attachment: </strong> 
                             <a href="{{ asset('storage/' . $clearance_request->attachment_file_path) }}" target="_blank">
@@ -68,56 +67,65 @@
             @else
             <div class="border rounded bg-white p-4 w-100 d-flex align-items-center">
                 <div class="col-12 row m-0 text-start text-primary">
-                    <h3 class="mb-3 col-12">Request Clearance Form</h3>
-                    <div class="col-md-4 col-12 mb-2">
-                        <div class="border p-2 rounded">
-                            <small><strong>Clearance Details</strong></small><br>
-                            <small><strong>Clearance Type:</strong><br> SAMPLE</small><br>
-                            <small><strong>Remarks:</strong><br> Lorem ipsum dolor sit amet consectetur adipisicing elit. Quidem, veritatis!</small><br>
-                            <small><strong>Attachment/s:</strong> samplefile.pdf</small><br>
+                    <div class="d-flex justify-content-between">
+                        <h3>Request Clearance</h3>
+                        <div>
+                            @if(in_array($clearance_request->status, [1,2,3]))
+                                <span class="badge text-white rounded text-bg-info px-2">
+                                    <i class="bi bi-exclamation-circle-fill pl-2"></i>
+                                    In Progress
+                                </span>
+                            @elseif($clearance_request->status == 4)
+                                <span class="badge text-white rounded text-bg-warning pl-2">
+                                <i class="bi bi-exclamation-circle-fill p-2"></i>
+                                    Pending Questionnaire
+                                </span>
+                            @endif 
                         </div>
+                    </div>    
+                    <div class="col-md-4 col-12 mb-2">
+                        <div class="border p-2 rounded mb-3">
+                            <small><strong>Clearance Details</strong></small><br>
+                            <small>
+                                <strong>Clearance Type:</strong><br>
+                                {{$clearance_request->clearance->employment_type_desc->description}}
+                            </small><br>
+                            <small>
+                                <strong>Purpose:</strong><br> 
+                                {{ $clearance_request->clearance_purpose->description }}
+                            </small><br>
+                            <small>
+                                <strong>Attachment/s:</strong>
+                                <a href="{{ asset('storage/' . $clearance_request->attachment_file_path) }}" target="_blank">
+                                    {{ basename($clearance_request->attachment_file_path) }}
+                                </a>
+                            </small><br>
+                        </div>
+                        <!-- $clearance_request->status == 4 MAO NI FINAL XDDDD -->
+                        @if ($clearance_request->status == 2)
+                            <div class="p-2 d-flex">
+                                <a href="{{ route('employee_clearance.questionnaire.index') }}" class="btn btn-success flex-fill">Proceed to Questionnaire</a>
+                            </div>
+                        @endif  
                     </div>
                     <div class="col-md-8 col-12">
-                        <div class="border p-2 mb-1 rounded">
-                            <h5>Supply officer</h5>
-                            <small>Lorem ipsum dolor sit amet.</small><br>
-                            <span class="badge text-white rounded-pill text-bg-success px-2">
-                                <i class="bi bi-check-circle-fill"></i>
-                                Approved
-                            </span>
-                        </div>
-                        <div class="border p-2 mb-1 rounded">
-                            <h5>Supply officer</h5>
-                            <small>Lorem ipsum dolor sit amet.</small><br>
-                            <span class="badge text-white rounded-pill text-bg-danger px-2">
-                                <i class="bi bi-x-circle-fill"></i>
-                                Denied
-                            </span>
-                        </div>
-                        <div class="border p-2 mb-1 rounded">
-                            <h5>Supply officer</h5>
-                            <small>Lorem ipsum dolor sit amet.</small><br>
-                            <span class="badge text-white rounded-pill text-bg-warning px-2">
-                                <i class="bi bi-exclamation-circle-fill"></i>
-                                Waiting for approval
-                            </span>
-                        </div>
-                        <div class="border p-2 mb-1 rounded">
-                            <h5>Supply officer</h5>
-                            <small>Lorem ipsum dolor sit amet.</small><br>
-                            <span class="badge text-white rounded-pill text-bg-warning px-2">
-                                <i class="bi bi-exclamation-circle-fill"></i>
-                                Waiting for approval
-                            </span>
-                        </div>
-                        <div class="border p-2 mb-1 rounded">
-                            <h5>Supply officer</h5>
-                            <small>Lorem ipsum dolor sit amet.</small><br>
-                            <span class="badge text-white rounded-pill text-bg-warning px-2">
-                                <i class="bi bi-exclamation-circle-fill"></i>
-                                Waiting for approval
-                            </span>
-                        </div>
+                        @foreach ($clearance_approvals as $approval)
+                            <div class="border p-2 mb-1 rounded">
+                                <h5>{{$approval->sub_role->description}}</h5>
+                                <small>{{$approval->comment ?? 'No comment' }}</small><br>
+                                @if($approval->isApproved == 1)
+                                    <span class="badge text-white rounded-pill text-bg-warning px-2">
+                                        <i class="bi bi-exclamation-circle-fill"></i>
+                                        Waiting for approval
+                                    </span>
+                                @elseif($approval->isApproved == 3)
+                                    <span class="badge text-white rounded-pill text-bg-success px-2">
+                                        <i class="bi bi-check-circle-fill"></i>
+                                        Approved
+                                    </span>
+                                @endif 
+                            </div>
+                        @endforeach
                     </div>
                 </div>      
             </div>

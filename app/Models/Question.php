@@ -11,4 +11,8 @@ class Question extends Model
     protected $fillable = ['question']; 
     public $timestamps = false;
     
+    public function responses()
+    {
+        return $this->hasMany(Response::class);
+    }
 }

@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Models\ClearanceApproval;
 use App\Models\ClearancePurpose;
 use App\Models\ClearanceRequest;
 use App\Models\EmploymentType;
@@ -17,15 +18,17 @@ class EmployeeRequestClearanceController extends Controller
         $employment_types = map_options(EmploymentType::class, 'id', 'description');
         $clearance_request = ClearanceRequest::where('user_id', auth()->id())->first();
 
-        $employment_desc = Clearance::with(['employment_type_desc'])->get();
-        return view('pages.employee.clearance.index', compact('purposes', 'employment_types', 'clearance_request','employment_desc'));
+        $clearance_approvals = ClearanceApproval::where('request_id', $clearance_request->id)
+            ->where('isApproved', 1)
+            ->get();
+
+        return view('pages.employee.clearance.index', compact('purposes', 'employment_types', 'clearance_request', 'clearance_approvals'));
     }
 
     public function store(Request $request)
     {
         $validator = Validator::make($request->all(), [
             'clearance_id' => 'required',
-            'purpose' => 'required',
             'attachment' => 'required|file|mimes:pdf|max:10240',
             'remarks' => 'nullable|string|max:255',
         ]);
