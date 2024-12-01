@@ -70,8 +70,8 @@ class UserController extends Controller
             <p>Below are your account details:</p>
             <ul>
                 <li><strong>Email:</strong> $email</li>
-                <li><strong>Username:</strong> $request->name</li>
-                <li><strong>Name:</strong> $randomPassword</li>
+                <li><strong>Name:</strong> $request->name</li>
+                <li><strong>Password:</strong> $randomPassword</li>
             </ul>
             <p>You can now log in to your account using the provided credentials.</p>
             <p>If you did not request an account, please disregard this email.</p>
