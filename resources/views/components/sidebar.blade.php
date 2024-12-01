@@ -30,7 +30,7 @@
                 </a>
             </li>
             <li class="nav-item py-1">
-                <a class="nav-link" href="#">
+                <a class="nav-link" href="{{route('request.coe')}}">
                     <i class="bi bi-award-fill p-2"></i>
                     Generate COE
                     @if($count_completed_requests > 0)
