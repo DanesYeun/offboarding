@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use App\Models\ClearancePurpose;
 use App\Models\ClearanceRequest;
 use App\Models\EmploymentType;
+use App\Models\Clearance;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Validator;
 
@@ -16,13 +17,14 @@ class EmployeeRequestClearanceController extends Controller
         $employment_types = map_options(EmploymentType::class, 'id', 'description');
         $clearance_request = ClearanceRequest::where('user_id', auth()->id())->first();
 
-        return view('pages.employee.clearance.index', compact('purposes', 'employment_types', 'clearance_request'));
+        $employment_desc = Clearance::with(['employment_type_desc'])->get();
+        return view('pages.employee.clearance.index', compact('purposes', 'employment_types', 'clearance_request','employment_desc'));
     }
 
     public function store(Request $request)
     {
         $validator = Validator::make($request->all(), [
-            'employment_type' => 'required',
+            'clearance_id' => 'required',
             'purpose' => 'required',
             'attachment' => 'required|file|mimes:pdf|max:10240',
             'remarks' => 'nullable|string|max:255',
@@ -36,7 +38,7 @@ class EmployeeRequestClearanceController extends Controller
             return redirect()->back()->with('error', 'Oh no! An error occurred');
         }
 
-        $data = $request->only(['employment_type', 'purpose', 'remarks']);
+        $data = $request->only(['clearance_id', 'purpose', 'remarks']);
         $data['status'] = 1; 
 
         if ($request->hasFile('attachment')) {

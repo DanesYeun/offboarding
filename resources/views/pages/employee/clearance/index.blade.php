@@ -9,7 +9,7 @@
                     <h3 class="mb-3">Request Clearance Form</h3>
                     <form action="{{ route('employee_clearance.store') }}" method="post" class="needs-validation row m-0" noValidate enctype="multipart/form-data">
                         @csrf
-                        <x-select name="employment_type" label="Employment Type" :options="$employment_types" required="true"/>
+                        <x-select name="clearance_id" label="Employment Type" :options="$employment_types" required="true"/>
                         <x-select name="purpose" label="Purpose" :options="$purposes" required="true"/>
                         <x-input type="file" label="Upload File" name="attachment" required="true" mdSize="12"/>
                         
@@ -31,12 +31,17 @@
                         <i class="bi bi-info-circle-fill"></i>
                         Your request is has been submitted and is under review!
                     </div>
+                    @foreach ($employment_desc as $item)
                     <div class="col-12 border rounded p-3">
                         <h5 class="d-flex justify-content-between">
                             <div>Request Details</div>
                             <small>{{ $clearance_request->created_at->diffForHumans() }}</small>
                         </h5>
-                        <p class="m-0"><strong>Employment Type: </strong> {{$clearance_request->employmentType->description}}</p>
+                        
+                        <p class="m-0"><strong>Employment Type: </strong> {{$item->employment_type_desc->description}}</p>
+                       
+                       
+                        
                         <p class="m-0"><strong>Purpose: </strong> {{$clearance_request->clearance_purpose->description}}</p>
                         <p class="m-0"><strong>Attachment: </strong> 
                             <a href="{{ asset('storage/' . $clearance_request->attachment_file_path) }}" target="_blank">
@@ -57,6 +62,7 @@
                             @endif     
                         </p>
                     </div>
+                    @endforeach
                 </div>
             </div>
             @else

@@ -115,7 +115,7 @@
                                     <form action="{{ route('request.status', ['id' => $data->id]) }}" method="POST" style="display: inline;">
                                         @csrf
                                         <input type="hidden" name="status" value="disapproved">
-                                        <button type="submit" class="btn btn-sm btn-danger my-2" {{ $isDisabled }}>
+                                        <button type="submit" class="btn btn-sm btn-danger my-2" {{ $isDisabled }} style="display: none;">
                                             <span class="d-none d-sm-inline">Disapprove</span>
                                         </button>
                                     </form>
