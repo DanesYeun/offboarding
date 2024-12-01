@@ -73,6 +73,9 @@ Route::middleware('auth')->group(function () {
     // Official Requests
     Route::get('clearance_requests', [OfficialRequestController::class, 'index'])->name('official_requests.index');
 
+    Route::post('official-request-status/{id}', [RequestController::class, 'official_update_status'])->name('official_request.status');
+
+
     // HR Questionnaire
     Route::get('questionnaire', [QuestionnaireController::class, 'index'])->name('hr_questionnaire.index');
     Route::post('question-store', [QuestionnaireController::class, 'store'])->name('hr_questionnaire.store');

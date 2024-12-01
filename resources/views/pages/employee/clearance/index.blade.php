@@ -31,6 +31,7 @@
                         <i class="bi bi-info-circle-fill"></i>
                         Your request is has been submitted and is under review!
                     </div>
+                  
                     <div class="col-12 border rounded p-3">
                         <h5 class="d-flex justify-content-between">
                             <div>Request Details</div>
@@ -60,6 +61,7 @@
                             @endif     
                         </p>
                     </div>
+                   
                 </div>
             </div>
             @else

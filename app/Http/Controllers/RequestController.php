@@ -8,6 +8,9 @@ use Illuminate\Http\Request;
 use App\Models\ClearanceRequest;
 use Barryvdh\DomPDF\Facade\Pdf;
 use Illuminate\Support\Facades\Storage;
+use Illuminate\Support\Facades\Auth;
+use App\Models\User;
+
 
 class RequestController extends Controller
 {
@@ -45,7 +48,7 @@ class RequestController extends Controller
                             'seqno' => $official->seqno,
                             'clearing_official_id' => $official->clearing_official,
                             'comment' => null,
-                            'isApproved' => 1
+                            'isApproved' => 0
                         ]);
                     }
                 }
@@ -62,6 +65,31 @@ class RequestController extends Controller
             return redirect()->back()->with('error', $e->getMessage());
         }
     }
+
+    public function official_update_status(Request $request, $id){
+
+        $status = $request->input('status');  
+        $request_id = $request->input('request_id');
+
+        $seqno = $request->input('seqno');  
+        $last_seqno = $request->input('last_seqno');  
+
+        $user =Auth::user();
+        if ($status == 'approved') {
+
+            $clearanceapproval = ClearanceApproval::where('clearing_official_id', $user->sub_role)
+            ->where('request_id',$request_id)
+            ->update(['isApproved' => 1]);
+
+            if($seqno == $last_seqno){
+                ClearanceRequest::where('id',$request_id)
+                ->update(['status' => 4]);
+                return redirect()->back()->with('success', 'Clearance request successfully approved.');
+            }
+            return redirect()->back()->with('success', 'Clearance request successfully verified.');
+        } 
+    }
+
 
     public function certificate_of_employment(){
         

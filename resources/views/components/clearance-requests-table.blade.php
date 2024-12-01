@@ -27,30 +27,44 @@
                 @foreach($datas as $data)
 
                     @php
-                        $statusClass = match($data->statusDesc->description) {
+                        $statusClass = match($data->status_description) {
                             'Disapproved' => 'text-bg-danger',
                             'Pending' => 'text-bg-warning', 
                             'Completed' => 'text-bg-success',
                             default => 'text-bg-secondary',
                         };
 
-                        $isDisabled = $data->status != 1 ? 'disabled' : '';
+                        $isDisabled = $data->status_id != 1 ? 'disabled' : '';
                     @endphp
+                  
+                     @if($data->clearing_official_id == Auth::user()->sub_role)
                     <tr>
-                        <td class="p-3">{{ $data->firstname }} {{ $data->user->name }}</td>
-                        <td class="p-3 d-none d-sm-table-cell">{{ $data->clearance->employment_type_desc->description }}</td>
-                        <td class="p-3 d-none d-sm-table-cell">{{ $data->clearance_purpose->description }}</td>
+                        <td class="p-3">{{ $data->name }}</td>
+                        <td class="p-3 d-none d-sm-table-cell">{{ $data->employment_description }}</td>
+                        <td class="p-3 d-none d-sm-table-cell">{{ $data->clearance_purpose_description }}</td>
                         <td class="p-3 d-none d-sm-table-cell">{{ \Carbon\Carbon::parse($data->created_at)->toFormattedDateString() }}</td>
-                        <td class="p-3 d-none d-sm-table-cell">{{ $data->comment_request[0]->comment ?? 'No Comment'}}</td>
+                        @if($data->status_id == 1)
+                        <td class="p-3 d-none d-sm-table-cell">{{'Waiting for HR Verification'}}</td>
+                        @else
+                        <td class="p-3 d-none d-sm-table-cell">{{ $data->comment ?? 'No Comment'}}</td>
+                        @endif
                         <td class="p-3">
-                            <small class="badge rounded-pill {{ $statusClass }}">{{ $data->statusDesc->description }}</small>
+                            <small class="badge rounded-pill {{ $statusClass }}">{{ $data->status_description }}</small>
                         </td>
+                       
                         <td class="p-3">
+                            @if($data->status_id == 1)
                             <button type="button" class="btn btn-sm btn-secondary text-white" data-bs-toggle="modal" data-bs-target="#viewModal{{ $data->id }}">
                                 <i class="bi bi-eye text-primary"></i> 
                             </button>
+                            @else
+                            <button type="button" class="btn btn-sm btn-secondary text-white" data-bs-toggle="modal" data-bs-target="#viewModal{{ $data->id }}">
+                                <i class="bi bi-eye text-primary"></i> 
+                            </button>
+                            @endif
                         </td>
                     </tr>
+                    @endif
 
                     <!-- Modal for this particular clearance request -->
                     <div class="modal fade" id="viewModal{{ $data->id }}" tabindex="-1" aria-labelledby="viewModalLabel{{ $data->id }}" aria-hidden="true">
@@ -62,11 +76,11 @@
                                 </div>
                                 <div class="modal-body">
                                     <div class="row">
-                                        <x-input type="text" name="requestedBy" label="Requested By" class="form-control" value="{{ $data->firstname }} {{ $data->user->name }}" readOnly="true" />
-                                        <x-input type="text" name="clearanceType" label="Clearance Type" class="form-control" value="{{ $data->clearance->employment_type_desc->description }}" readOnly="true"/>
-                                        <x-input type="text" name="purpose" label="Purpose" class="form-control" value="{{ $data->clearance_purpose->description }}" readOnly="true"/>
+                                        <x-input type="text" name="requestedBy" label="Requested By" class="form-control" value="{{ $data->name }} {{ $data->name }}" readOnly="true" />
+                                        <x-input type="text" name="clearanceType" label="Clearance Type" class="form-control" value="{{ $data->employment_description }}" readOnly="true"/>
+                                        <x-input type="text" name="purpose" label="Purpose" class="form-control" value="{{ $data->clearance_purpose_description }}" readOnly="true"/>
                                         <x-input type="text" name="dateRequested" label="Date Requested" class="form-control" value="{{ \Carbon\Carbon::parse($data->created_at)->toFormattedDateString() }}" readOnly="true"/>
-                                        <x-input type="text" name="status" label="Status" class="form-control" value="{{ $data->statusDesc->description }}" readOnly="true"/>
+                                        <x-input type="text" name="status" label="Status" class="form-control" value="{{ $data->status_description }}" readOnly="true"/>
                                         
                                         <div class="col-md-6 mb-3 mt-4">
                                             <div class="input-group">
@@ -85,7 +99,7 @@
                                         {{-- Comment add --}}
                                         <form action="{{ route('clearance.comment', ['id' => $data->id]) }}" method="POST" style="display: inline;">
                                             @csrf
-                                            <input type="hidden" name="user_id" value="{{$data->user_id}}">
+                                            <input type="hidden" name="user_id" value="{{$data->id}}">
                                             <input type="hidden" name="is_comply" value="0">
                                            
                                             <x-textarea label="Comments" :datas="[]"  name="comment"/>
@@ -103,10 +117,14 @@
                                 </div>
                                 <div class="modal-footer">
                                     <!-- Approve Button -->
-                                    <form action="{{ route('request.status', ['id' => $data->id]) }}" method="POST" style="display: inline;">
+                                    <form action="{{ route('official_request.status', ['id' => $data->id]) }}" method="POST" style="display: inline;">
                                         @csrf
                                         <input type="hidden" name="status" value="approved">
-                                        <button type="submit" class="btn btn-sm btn-success my-2" {{ $isDisabled }}>
+                                        <input type="hidden" name="request_id" value="{{$data->id}}">
+                                        <input type="hidden" name="last_seqno" value="{{ $data->last_sequence}}">
+                                        <input type="hidden" name="seqno" value="{{ $data->seqno}}">
+                                       
+                                        <button type="submit" class="btn btn-sm btn-success my-2" >
                                             <span class="d-none d-sm-inline">Verify</span>
                                         </button>
                                     </form>
@@ -115,7 +133,7 @@
                                     <form action="{{ route('request.status', ['id' => $data->id]) }}" method="POST" style="display: inline;">
                                         @csrf
                                         <input type="hidden" name="status" value="disapproved">
-                                        <button type="submit" class="btn btn-sm btn-danger my-2" {{ $isDisabled }}>
+                                        <button type="submit" class="btn btn-sm btn-danger my-2" {{ $isDisabled }} style="display: none;">
                                             <span class="d-none d-sm-inline">Disapprove</span>
                                         </button>
                                     </form>

@@ -6,6 +6,7 @@ use App\Models\ClearanceApproval;
 use App\Models\ClearancePurpose;
 use App\Models\ClearanceRequest;
 use App\Models\EmploymentType;
+use App\Models\Clearance;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Validator;
 
