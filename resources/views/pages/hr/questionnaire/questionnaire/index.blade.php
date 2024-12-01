@@ -19,21 +19,26 @@
             <div class="accordion-item">
                 <h2 class="accordion-header">
                     <button class="accordion-button text-primary" type="button" data-bs-toggle="collapse" data-bs-target="#collapseOne" aria-expanded="true" aria-controls="collapseOne">
-                        Add Question
+                        Add / Edit Question
                     </button>
                 </h2>
 
                 <div id="collapseOne" class="accordion-collapse collapse" data-bs-parent="#accordionExample">
                     <div class="accordion-body">
-                        <form method="post" id="clearance-form" action="{{ route('hr_questionnaire.store') }}" class="needs-validation" novalidate>
+                        <form method="post" id="clearance-form" action="{{ isset($question) ? route('hr_questionnaire.update', $question->id) : route('hr_questionnaire.store') }}" class="needs-validation" novalidate>
                             @csrf
+                            
                             <div class="container row">  
+                                <!-- Hidden input for question ID -->
+                                <input type="hidden" id="question_id" name="id">
+                                
+                                <!-- Textarea for the question -->
                                 <x-textarea label="Question" name="question" required="true"/>
 
                                 <div class="d-flex justify-content-end">   
                                     <button type="submit" class="btn btn-success">
                                         <i class="bi bi-floppy-fill p-2"></i>
-                                        Save
+                                        {{ isset($question) ? 'Update' : 'Save' }}
                                     </button>
                                 </div> 
                             </div>
@@ -49,17 +54,4 @@
 
 @section('js')
     <script src="{{ asset('js/formValidation.js') }}"></script>
-    <script>
-        // Clear any leading/trailing whitespace in the textarea when the page loads
-        window.addEventListener('DOMContentLoaded', (event) => {
-            const textarea = document.getElementById('question');
-            if (textarea) {
-                // Trim whitespace and reset the value if needed
-                textarea.value = textarea.value.trim();
-
-                // Log the trimmed value to check
-                console.log('Trimmed value of the textarea:', textarea.value);
-            }
-        });
-    </script>
 @endsection

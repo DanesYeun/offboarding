@@ -68,5 +68,7 @@ Route::get('requests', [OfficialRequestController::class, 'index'])->name('offic
 
 Route::get('questionnaire', [QuestionnaireController::class, 'index'])->name('hr_questionnaire.index');
 Route::post('question-store', [QuestionnaireController::class, 'store'])->name('hr_questionnaire.store');
+Route::post('questions/{id}', [QuestionnaireController::class, 'update'])->name('hr_questionnaire.update');
+Route::post('questions/{id}', [QuestionnaireController::class, 'delete'])->name('hr_questionnaire.delete');
 
 
