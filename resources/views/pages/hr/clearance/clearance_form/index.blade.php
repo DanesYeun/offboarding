@@ -21,7 +21,10 @@
                 <a class="nav-link" href="{{route('request.index')}}">
                     Requests
                     @if($count_new_requests > 0)
-                        <span class="badge bg-danger ms-2">{{ $count_new_requests }}</span>
+                        <span class="badge bg-warning ms-2">{{ $count_new_requests }}</span>
+                    @endif
+                    @if($count_completed_requests > 0)
+                        <span class="badge bg-success ms-2">{{ $count_completed_requests }}</span>
                     @endif
                 </a>
             </li>
@@ -30,7 +33,7 @@
             <div class="accordion-item">
                 <h2 class="accordion-header">
                     <button class="accordion-button text-primary" type="button" data-bs-toggle="collapse" data-bs-target="#collapseOne" aria-expanded="true" aria-controls="collapseOne">
-                        Clearance Form
+                        Add Clearance Form
                     </button>
                 </h2>
 
@@ -40,7 +43,7 @@
                             <form method="post" id="clearance-form" action="{{route('clearance.store')}}"  class="needs-validation" novalidate>
                                 @csrf
                                 <div class="container row">
-                                    <h4 class="py-2 text-primary text-start">Clearance Form</h4>
+                                    {{-- <h4 class="py-2 text-primary text-start">Clearance Form</h4> --}}
                                     
                                     <x-select name="employment_type" label="Type Of Clearance" :options="$employment_types" required="true" sizeMd="6" />
 
@@ -49,7 +52,7 @@
                                     {{-- <x-textarea name="statement" label="Statement" /> --}}
 
                             
-                                    <h5 class="py-2 text-primary text-start">Add Clearing Officials</h5>
+                                    <h5 class="py-2 text-primary text-start">Clearing Officials</h5>
                             
                                     {{-- Clearing Officials Table --}}
                                     <div class="table-responsive">
@@ -75,7 +78,7 @@
                                     <div class="d-flex justify-content-end mt-3">
                                         <button type="submit" class="btn btn-success">
                                             <i class="bi bi-floppy-fill p-2"></i> Save
-                                        </button>
+                                        </button>   
                                     </div>
                                 </div>
                             </form>
@@ -89,7 +92,7 @@
                 </div>
             </div>
         </div>
-        <x-clearance-forms-table label="Clearance Form" :datas="$forms"/>
+        <x-clearance-forms-table label="Clearance Forms" :datas="$forms"/>
     </div>
 @endsection
 

@@ -18,7 +18,7 @@
                 <a class="nav-link active" href="{{route('request.index')}}">
                     Requests
                     @if($count_new_requests > 0)
-                        <span class="badge bg-danger ms-2">{{ $count_new_requests }}</span>
+                        <span class="badge bg-warning ms-2">{{ $count_new_requests }}</span>
                     @endif
                 </a>
             </li>

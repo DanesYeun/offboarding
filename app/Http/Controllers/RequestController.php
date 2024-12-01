@@ -11,7 +11,7 @@ class RequestController extends Controller
 {
     public function index(){
 
-        $requests = ClearanceRequest::with(['user','employmentType','clearance_purpose', 'statusDesc'])->where('status', 1)->get();
+        $requests = ClearanceRequest::with(['user','employmentType','clearance_purpose', 'statusDesc'])->orderBy('status', 'ASC')->orderBy('created_at', 'DESC')->get();
 
         return view('pages.hr.clearance.requests.index', compact('requests'));
     }
