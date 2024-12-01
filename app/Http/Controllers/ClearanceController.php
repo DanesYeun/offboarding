@@ -9,6 +9,7 @@ use App\Models\SubRole;
 use App\Models\User;
 use App\Models\Clearance;
 use App\Models\ClearanceOfficial;
+use App\Models\Comment;
 
 
 class ClearanceController extends Controller
@@ -162,5 +163,22 @@ class ClearanceController extends Controller
         }catch(\Exception $e){
             return redirect()->back()->with('error', 'Please check the details and try again.');
         }
+    }
+
+
+
+    public function comment(Request $request, $id){
+       try{
+        $comment = Comment::create([
+            'clearance_requests_id' => $id,
+            'comment' => $request->comment,
+            'is_comply' => $request->is_comply
+        ]);
+
+        return redirect()->back()->with('success', 'Successfully Commented.');
+       }catch(\Exception $e){
+        return redirect()->back()->with('error', 'Something went wrong');
+       }
+
     }
 }

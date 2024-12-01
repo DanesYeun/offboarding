@@ -5,13 +5,9 @@
         <h2 class="text-primary text-start">
             Clearance Requests
         </h2>
+    
 
-        <!-- DElete this, if naa na backend -->
-        @php
-            $users = [];
-        @endphp
-        
-        <x-clearance-requests-table label="Request List" :datas="$users"/>
+        <x-clearance-requests-table label="Request List" :datas="$clearanceRequest"/>
     </div>
 @endsection
 

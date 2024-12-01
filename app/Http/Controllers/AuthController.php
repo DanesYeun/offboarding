@@ -8,6 +8,7 @@ use Illuminate\Support\Facades\Auth;
 use App\Models\User;
 use App\Http\Controllers\SendMailController;
 use Illuminate\Support\Str;
+use App\Models\ClearanceRequest;
 
 
 class AuthController extends Controller
@@ -64,7 +65,9 @@ class AuthController extends Controller
     }
     public function official_dashboard()
     {
-        return view('pages.official.request-clearance.index');
+       $clearanceRequest= ClearanceRequest::with(['employmentType','clearance_purpose','statusDesc','comment_request'])->get();
+       
+        return view('pages.official.request-clearance.index', compact('clearanceRequest'));
     }
 
 
