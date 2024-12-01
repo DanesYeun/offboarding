@@ -6,6 +6,8 @@ use App\Models\Clearance;
 use App\Models\ClearanceApproval;
 use Illuminate\Http\Request;
 use App\Models\ClearanceRequest;
+use Barryvdh\DomPDF\Facade\Pdf;
+use Illuminate\Support\Facades\Storage;
 
 class RequestController extends Controller
 {
@@ -60,4 +62,34 @@ class RequestController extends Controller
             return redirect()->back()->with('error', $e->getMessage());
         }
     }
+
+    public function certificate_of_employment(){
+        
+        $requests = ClearanceRequest::with(['user'])->where('status', 5)->whereNull('generated_coe_path')->get();
+
+        return view('pages.hr.certificate.index', compact('requests'));
+    }
+
+    public function generate_certificate_of_employment(Request $request, $id)
+    {
+        $requests = ClearanceRequest::with(['user'])->find($id);
+        $data = [
+            'name' => $requests->user->name,
+            'job_title' => $request->job_title,
+            'date' => $request->date,
+        ];
+
+        $pdf = Pdf::loadView('pages.hr.certificate.coe', $data);
+
+        $fileName = 'coe_' . $requests->id . '_' . time() . '.pdf';
+        $filePath = $fileName; 
+
+        Storage::put('coe/' . $filePath, $pdf->output()); 
+
+        $requests->update(['generated_coe_path' => $filePath]);
+
+        // Stream the PDF to the browser
+        return $pdf->stream($fileName);
+    }
+
 }
