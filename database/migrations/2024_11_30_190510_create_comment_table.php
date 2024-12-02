@@ -15,7 +15,7 @@ return new class extends Migration
             $table->id();
             $table->unsignedBigInteger('clearance_requests_id');
             $table->string('comment');
-            $table->tinyInteger('is_comply')->default(0);
+            $table->tinyInteger('clearing_official_id');
             $table->foreign('clearance_requests_id')
             ->references('id')->on('clearance_requests')
             ->onDelete('cascade');

@@ -100,7 +100,7 @@
                                         <form action="{{ route('clearance.comment', ['id' => $data->id]) }}" method="POST" style="display: inline;">
                                             @csrf
                                             <input type="hidden" name="user_id" value="{{$data->id}}">
-                                            <input type="hidden" name="is_comply" value="0">
+                                            <input type="hidden" name="clearing_official_id" value="{{Auth::user()->id}}">
                                            
                                             <x-textarea label="Comments" :datas="[]"  name="comment"/>
                                             {{-- user_id --}}
