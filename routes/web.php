@@ -53,7 +53,7 @@ Route::middleware('auth')->group(function () {
     Route::post('add-comment/{id}', [ClearanceController::class, 'comment'])->name('clearance.comment');
 
     // Requests Management
-    Route::get('requests', [RequestController::class, 'index'])->name('request.index');
+    Route::get('requests', [RequestController::class, 'index'])->name('clearance_request.index');
     Route::post('request-status/{id}', [RequestController::class, 'update_status'])->name('request.status');
 
     // Profile Routes
