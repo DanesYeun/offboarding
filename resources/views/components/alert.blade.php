@@ -10,7 +10,7 @@
     </div>
 @elseif(session('error'))
     <div class="alert alert-danger alert-dismissible fade show" role="alert">
-        <i class="bi bi-x-circle-fill"></i
+        <i class="bi bi-x-circle-fill"></i>
         {{ session('error') }}
     </div>
 @endif
