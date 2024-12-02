@@ -10,6 +10,7 @@ use App\Models\User;
 use App\Models\Clearance;
 use App\Models\ClearanceOfficial;
 use App\Models\Comment;
+use App\Models\ClearanceApproval;
 
 
 class ClearanceController extends Controller
@@ -175,9 +176,15 @@ class ClearanceController extends Controller
             'clearing_official_id' => $request->clearing_official_id
         ]);
 
+        $update_approval_comment = ClearanceApproval::where('request_id', $id)
+        ->where('isApproved', 0)
+        ->take(1)
+        ->update(['comment' => $request->comment]);
+// dd($update_approval_comment);
+
         return redirect()->back()->with('success', 'Successfully Commented.');
        }catch(\Exception $e){
-        return redirect()->back()->with('error', 'Something went wrong');
+        return redirect()->back()->with('error', $e->getMessage());
        }
 
     }
