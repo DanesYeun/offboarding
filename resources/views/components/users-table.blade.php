@@ -23,8 +23,8 @@
             <tbody id="tableBody">
                 @foreach($datas as $data)
                     <tr>
-                        <td class="p-3">{{ $data->id }}</td>
                         <td class="p-3">{{ $data->name }}</td>
+                        <td class="p-3">{{ $data->email }}</td>
                         <td class="p-3 d-none d-sm-table-cell">{{ $data->role->name }}</td>
                         <td class="p-3 d-none d-sm-table-cell">{{ $data->subrole->description ?? '' }}</td>
                         <td class="p-3">
