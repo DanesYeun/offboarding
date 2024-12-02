@@ -172,7 +172,7 @@ class ClearanceController extends Controller
         $comment = Comment::create([
             'clearance_requests_id' => $id,
             'comment' => $request->comment,
-            'is_comply' => $request->is_comply
+            'clearing_official_id' => $request->clearing_official_id
         ]);
 
         return redirect()->back()->with('success', 'Successfully Commented.');

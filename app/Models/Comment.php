@@ -13,6 +13,6 @@ class Comment extends Model
     protected $fillable = [
         'clearance_requests_id',
         'comment',
-        'is_comply'
+        'clearing_official_id'
     ]; 
 }
