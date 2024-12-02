@@ -26,7 +26,7 @@ class ClearanceController extends Controller
             ];
         });
         
-        //1:1 subrole, exclude active subrole
+        //1:1 subrole, exclude inactive subrole
         $excludedSubRoles = User::where('status', 1)->pluck('sub_role')->toArray();
 
         $subRoles = SubRole::whereIn('id', $excludedSubRoles)->get()->map(function ($subrole) {
@@ -70,7 +70,6 @@ class ClearanceController extends Controller
         $title = $request->input('title', []);
 
         $totalRows = count($seqno);
-
 
         foreach ($seqno as $index => $seq) {
             ClearanceOfficial::create([
