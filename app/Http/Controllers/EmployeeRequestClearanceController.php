@@ -18,9 +18,13 @@ class EmployeeRequestClearanceController extends Controller
         $employment_types = map_options(EmploymentType::class, 'id', 'description');
         $clearance_request = ClearanceRequest::where('user_id', auth()->id())->first();
 
-        $clearance_approvals = ClearanceApproval::where('request_id', $clearance_request->id)
-            ->where('isApproved', 1)
-            ->get();
+        if(!is_null($clearance_request))
+        {
+            $clearance_approvals = ClearanceApproval::where('request_id', $clearance_request->id)
+                ->get();
+        } else {
+            $clearance_approvals = null;
+        }
 
         return view('pages.employee.clearance.index', compact('purposes', 'employment_types', 'clearance_request', 'clearance_approvals'));
     }
