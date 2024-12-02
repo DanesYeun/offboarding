@@ -66,6 +66,7 @@ Route::middleware('auth')->group(function () {
 
     // Employee COE
     Route::get('COE', [EmployeeCOEController::class, 'index'])->name('employee_coe.index');
+    Route::get('COE/download/{id}', [EmployeeCOEController::class, 'download'])->name('employee_coe.download');
 
     // Send Email
     Route::post('send_email', [SendMailController::class, 'Send_email'])->name('send_email');

@@ -61,10 +61,12 @@
                 <a class="nav-link {{ Str::startsWith(Route::currentRouteName(), 'employee_coe') ? 'bg-primary text-white rounded' : '' }}" href="{{ route('employee_coe.index') }}">
                     <i class="bi bi-award-fill p-2"></i>
                     COE
+                    @if($coe_available > 0)
+                        <span class="badge bg-success ms-2">{{ $coe_available }}</span>
+                    @endif
                 </a>
             </li>
         @endif
-        <!-- For employee -->
 
         <li class="nav-item py-1">
             <a class="nav-link {{ Str::startsWith(Route::currentRouteName(), 'change_password') ? 'bg-primary text-white rounded' : '' }}" href="{{route('change_password')}}" onclick="">         

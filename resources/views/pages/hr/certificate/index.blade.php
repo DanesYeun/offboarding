@@ -43,12 +43,11 @@
         function updateFormAction() {
             // Get selected employee ID
             const employeeId = document.querySelector('select[name="employee_id"]').value;
-
             // Update the form action dynamically
             const form = document.getElementById('certificateForm');
             form.action = `{{ url('generate-certificate-of-employment') }}/${employeeId}`;
 
-            window.location.reload();
+            //window.location.reload();
         }
 
     </script>

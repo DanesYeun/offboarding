@@ -3,7 +3,7 @@
 @section('content')
     <x-toast/>
     <div class="d-flex justify-content-center m-md-2"> 
-        @if(is_null($clearance_request) || in_array($clearance_request->status, [5,6]) )
+        @if(is_null($clearance_request) || (in_array($clearance_request->status, [6])|| ($clearance_request->status == 5 && !is_null($clearance_request->generated_coe_path))))
             <div class="border rounded bg-white p-4 w-100 d-flex align-items-center">
                 <div class="col-12 text-start text-primary">
                     <h3 class="mb-3">Request Clearance Form</h3>
@@ -75,10 +75,14 @@
                                     <i class="bi bi-exclamation-circle-fill pl-2"></i>
                                     In Progress
                                 </span>
-                            @elseif($clearance_request->status == 4)
+                            @elseif(in_array($clearance_request->status, [4,5]))
                                 <span class="badge text-white rounded text-bg-warning pl-2">
-                                <i class="bi bi-exclamation-circle-fill p-2"></i>
-                                    Pending Questionnaire
+                                <i class="bi bi-exclamation-circle-fill pl-2"></i>
+                                    @if ($clearance_request->status == 4)
+                                        Pending Questionnaire
+                                    @else
+                                        COE pending
+                                    @endif
                                 </span>
                             @endif 
                         </div>
@@ -101,8 +105,7 @@
                                 </a>
                             </small><br>
                         </div>
-                        <!-- $clearance_request->status == 4 MAO NI FINAL XDDDD -->
-                        @if ($clearance_request->status == 2)
+                        @if ($clearance_request->status == 4)
                             <div class="p-2 d-flex">
                                 <a href="{{ route('employee_clearance.questionnaire.index') }}" class="btn btn-success flex-fill">Proceed to Questionnaire</a>
                             </div>
@@ -113,12 +116,12 @@
                             <div class="border p-2 mb-1 rounded">
                                 <h5>{{$approval->sub_role->description}}</h5>
                                 <small>{{$approval->comment ?? 'No comment' }}</small><br>
-                                @if($approval->isApproved == 1)
+                                @if($approval->isApproved == 0)
                                     <span class="badge text-white rounded-pill text-bg-warning px-2">
                                         <i class="bi bi-exclamation-circle-fill"></i>
                                         Waiting for approval
                                     </span>
-                                @elseif($approval->isApproved == 3)
+                                @elseif($approval->isApproved == 1)
                                     <span class="badge text-white rounded-pill text-bg-success px-2">
                                         <i class="bi bi-check-circle-fill"></i>
                                         Approved

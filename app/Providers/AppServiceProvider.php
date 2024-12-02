@@ -4,6 +4,7 @@ namespace App\Providers;
 
 // use Illuminate\Support\ServiceProvider;
 use Illuminate\Foundation\Support\Providers\AuthServiceProvider as ServiceProvider;
+use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Gate;
 use Illuminate\Support\Facades\View;
 
@@ -44,6 +45,17 @@ class AppServiceProvider extends ServiceProvider
         View::composer('*', function ($view) {
             $count_completed_requests = ClearanceRequest::where('status', 5)->whereNull('generated_coe_path')->count();
             $view->with('count_completed_requests', $count_completed_requests);
+        });
+
+        View::composer('*', function ($view) {
+            $userId = Auth::id();
+        
+            $coe_available = ClearanceRequest::where('status', 5)
+                ->whereNotNull('generated_coe_path')
+                ->where('user_id', $userId)
+                ->count();
+        
+            $view->with('coe_available', $coe_available);
         });
     }
 }
