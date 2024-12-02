@@ -15,7 +15,7 @@
                 <a class="nav-link" href="{{route('clearance.index')}}">Clearance Form</a>
             </li>
             <li class="nav-item">
-                <a class="nav-link active" href="{{route('request.index')}}">
+                <a class="nav-link active" href="{{route('clearance_request.index')}}">
                     Requests
                     @if($count_new_requests > 0)
                         <span class="badge bg-warning ms-2">{{ $count_new_requests }}</span>
