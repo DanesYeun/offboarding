@@ -81,6 +81,8 @@ class RequestController extends Controller
             ->where('request_id',$request_id)
             ->update(['isApproved' => 1]);
 
+            $status_for_hr = ClearanceRequest::where('id',$request_id)->update(['status' => 3]);
+
             if($seqno == $last_seqno){
                 ClearanceRequest::where('id',$request_id)
                 ->update(['status' => 4]);
