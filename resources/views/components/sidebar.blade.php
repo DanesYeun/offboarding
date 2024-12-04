@@ -1,6 +1,9 @@
 <div class="sidebar bg-white p-2 h-100 d-none d-sm-inline" style="width: 300px;">
-    <div class="mt-2 border border-danger w-100 h-25">
-        LOGO HERE
+    <div class="mt-2 w-100 h-25 d-flex flex-column justify-content-center align-items-center">
+        <h1><code>WBEOBC</code></h1>
+        <div class="w-100 d-flex justify-content-center align-items-center p-2">
+            <span class="badge text-bg-primary">{{ auth()->user()->name }}</span>
+        </div>
     </div>
     <ul class="nav flex-column">
         <li class="nav-item py-1">
