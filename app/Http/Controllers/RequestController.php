@@ -94,17 +94,25 @@ class RequestController extends Controller
     public function certificate_of_employment(){
         
         $requests = ClearanceRequest::with(['user'])->where('status', 5)->whereNull('generated_coe_path')->get();
+        $departments = $this->deparments();
 
-        return view('pages.hr.certificate.index', compact('requests'));
+        return view('pages.hr.certificate.index', compact('requests', 'departments'));
     }
 
     public function generate_certificate_of_employment(Request $request, $id)
     {
+ 
+        $departments = $this->deparments();
+        $department = collect($departments)->firstWhere('id', $request->department);
+        $departmentTypeName = $department ? $department['name'] : null;
+        
         $requests = ClearanceRequest::with(['user'])->find($id);
         $data = [
             'name' => $requests->user->name,
             'job_title' => $request->job_title,
             'date' => $request->date,
+            'employement_type' => $request->employement_type,
+            'department' => $departmentTypeName
         ];
 
         $pdf = Pdf::loadView('pages.hr.certificate.coe', $data);
@@ -118,6 +126,16 @@ class RequestController extends Controller
 
         // Stream the PDF to the browser
         return $pdf->stream($fileName);
+    }
+
+    private function deparments(){
+        return [
+            ['id' => 1, 'name' => 'Department of Technology'],
+            ['id' => 2, 'name' => 'Department of Agriculture'],
+            ['id' => 3, 'name' => 'Department of Engineering'],
+            ['id' => 4, 'name' => 'Department of Education'],
+            ['id' => 5, 'name' => 'Department of Arts and Sciences'],
+        ];
     }
 
 }

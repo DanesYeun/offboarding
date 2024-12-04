@@ -21,8 +21,9 @@
                             @endphp
                     
                             <x-select name="employee_id" label="Employee Name" :options="$options" required="true" mdSize="6"/>
-                            <x-input name="job_title" label="Job Title" type="text" mdSize="6"/>
-                            <x-input name="date" label="Departure Date" type="date" mdSize="12"/>
+                            <x-input name="employement_type" label="Employment Type" type="text" mdSize="6"/>
+                            <x-select name="department" label="Department" :options="$departments" required="true" mdSize="6"/>
+                            <x-input name="date" label="Departure Date" type="date" mdSize="6"/>
                     
                             <div class="col-12 mt-3">
                                 <button type="submit" class="btn btn-lg btn-success" onclick="updateFormAction()">
