@@ -77,9 +77,9 @@
                                         <x-input type="text" name="clearanceType" label="Clearance Type" class="form-control" value="{{ $data->clearance->employment_type_desc->description }}" readOnly="true"/>
                                         <x-input type="text" name="purpose" label="Purpose" class="form-control" value="{{ $data->clearance_purpose->description }}" readOnly="true"/>
                                         <x-input type="text" name="dateRequested" label="Date Requested" class="form-control" value="{{ \Carbon\Carbon::parse($data->created_at)->toFormattedDateString() }}" readOnly="true"/>
-                                        <x-input type="text" name="status" label="Status" class="form-control" value="{{ $data->statusDesc->description }}" readOnly="true"/>
+                                        {{-- <x-input type="text" name="status" label="Status" class="form-control" value="{{ $data->statusDesc->description }}" readOnly="true"/> --}}
                                         
-                                        <div class="col-md-6 mb-3 mt-4">
+                                        <div class="col-md-12 mb-3 mt-3">
                                             <div class="input-group">
                                                 @if($data->attachment_file_path)
                                                     <input type="text" class="form-control" id="attachment" value="{{ basename($data->attachment_file_path) }}" readonly>
@@ -93,6 +93,11 @@
                                                 @endif
                                             </div>
                                         </div>
+                                        <h5>Clearing Officials</h5>
+                                        @foreach($data->clearance_approvals as $approver)
+                                            <x-input type="text" name="approver" label="" class="form-control" value="{{ $approver->sub_role->description }}" readOnly="true" mdSize="9"/>
+                                            <x-input type="text" name="approver" label="" class="form-control" value="{{ $approver->isApproved ? 'Approved' : 'Pending' }}" readOnly="true" mdSize="3"/>
+                                        @endforeach
                                     </div>
                         
                                 </div>
