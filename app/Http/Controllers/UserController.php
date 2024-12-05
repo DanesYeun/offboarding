@@ -16,7 +16,7 @@ class UserController extends Controller
 {
     public function index (){
 
-        $users = User::with(['role', 'subrole'])->where("status", 1)->get();
+        $users = User::with(['role', 'subrole'])->whereIn("status", [1,3])->get();
 
         return view('pages.hr.users.index', compact('users'));
     }
@@ -163,5 +163,16 @@ class UserController extends Controller
         catch(\Exception $e){
         return redirect()->back()->with('error', "Something went wrong");
         }
+    }
+
+    public function new_activate($id){
+        $user = User::find($id);
+        if (!$user) {
+            return redirect()->back()->with('error', 'User doesn\'t exist');
+        }
+        $user->update([
+            'status' => 1,
+        ]);
+        return redirect()->route('users.index')->with('success', 'User account successfully activated.');
     }
 }

@@ -24,24 +24,22 @@ class AuthController extends Controller
          if (Auth::attempt(['email' => $request->email, 'password' => $request->password])) {
     
             $user = Auth::user();
-
-        //  dd($user);
-            // Store user data in session
-            session(['user_data' => $user]);
-            // redirect to homepage after login
-            // if($user->role_id == 3){
-               
-            // }
-            switch($user->role_id){
-                case 1:   return  redirect()->intended(route('clearance.index'));
-                break;
-                case 2:   return  redirect()->intended(route('official_requests.index'));
-                break;
-                case 3:   return  redirect()->intended(route('employee_clearance.index'));
-                break;
+            if($user->status == 3){
+                Auth::logout();
+                return redirect()->back()->with('error', 'Contact HR for account activation.');
             }
+            if($user->status == 1){
+                session(['user_data' => $user]);
+                switch($user->role_id){
+                    case 1:   return  redirect()->intended(route('clearance.index'));
+                    break;
+                    case 2:   return  redirect()->intended(route('official_requests.index'));
+                    break;
+                    case 3:   return  redirect()->intended(route('employee_clearance.index'));
+                    break;
+                }
 
-           
+            }
           
         }
         return redirect()->back()->with('error', 'Invalid credentials');
@@ -87,7 +85,7 @@ class AuthController extends Controller
             'email' => $request->email,
             'password' => $request->password,
             'role_id' => 3,
-            'status' => 1
+            'status' => 3
 
         ]);
         $email = $request->email;
