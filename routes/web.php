@@ -42,6 +42,7 @@ Route::middleware('auth')->group(function () {
     Route::get('user-details/{id}', [UserController::class, 'details'])->name('users.details');
     Route::post('update-user/{id}', [UserController::class, 'update'])->name('users.update');
     Route::post('disable-user/{id}', [UserController::class, 'disable'])->name('users.disable');
+    Route::post('new-activate-user/{id}', [UserController::class, 'new_activate'])->name('users.new_activate');
     Route::get('change_password', [UserController::class, 'change_password'])->name('change_password');
     Route::post('process_change_password', [UserController::class, 'process_change_password'])->name('users.process_change_password');
 

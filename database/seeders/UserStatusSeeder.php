@@ -15,6 +15,7 @@ class UserStatusSeeder extends Seeder
         DB::table('user_status')->insert([
             ['description' => 'Active'],
             ['description' => 'Disabled'],
+            ['description' => 'New'],
         ]);
     }
 }

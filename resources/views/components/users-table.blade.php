@@ -31,6 +31,7 @@
                             <a class="btn btn-sm btn-secondary text-white" href="{{ route('users.details', ['id' => $data->id]) }}">
                                 <i class="bi bi-pencil-square"></i>
                             </a>
+                           @if ($data->status == 1)
                             <form action="{{ route('users.disable', ['id' => $data->id]) }}" method="POST" style="display: inline;">
                                 @csrf
                                 <button type="submit" class="btn btn-sm btn-danger my-2">
@@ -38,6 +39,15 @@
                                     <span class="d-none d-sm-inline">Disable</span>
                                 </button>
                             </form>
+                            @elseif ($data->status == 3)
+                            <form action="{{ route('users.new_activate', ['id' => $data->id]) }}" method="POST" style="display: inline;">
+                                @csrf
+                                <button type="submit" class="btn btn-sm btn-success my-2">
+                                    <i class="bi bi-check-circle"></i>
+                                    <span class="d-none d-sm-inline">Activate New Account</span>
+                                </button>
+                            </form>
+                            @endif
                         </td>
                     </tr>
                 @endforeach
