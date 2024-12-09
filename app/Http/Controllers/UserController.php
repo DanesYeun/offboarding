@@ -11,12 +11,13 @@ use App\Models\SubRole;
 use App\Http\Controllers\SendMailController;
 use Illuminate\Support\Str;
 use Illuminate\Support\Facades\Auth;
+use App\Models\UserStatus;
 
 class UserController extends Controller
 {
     public function index (){
 
-        $users = User::with(['role', 'subrole'])->whereIn("status", [1,3])->get();
+        $users = User::with(['role', 'subrole','user_stat'])->whereIn("status", [1,3,4])->get();
 
         return view('pages.hr.users.index', compact('users'));
     }
@@ -98,8 +99,13 @@ class UserController extends Controller
         $userDetails = User::find($id);
 
         $roles = map_options(Role::class, 'id', 'name');
+        $user_stats = map_options(UserStatus::class, 'id', 'description')->whereIn('id', [1,4]);
 
-        $excludedSubRoles = User::where('status', 1) ->whereNotNull('sub_role')->pluck('sub_role')->toArray();
+        $current_stat = UserStatus::where('id',$userDetails->status)->get();
+        // dd($current_stat);
+        $excludedSubRoles = User::where('status', 1)->whereNotNull('sub_role')
+        ->where('sub_role', '!=', $userDetails->sub_role)
+        ->pluck('sub_role')->toArray();
         // dd($excludedSubRoles);
         $subroles = SubRole::whereNotIn('id', $excludedSubRoles)->get()->map(function ($subrole) {
             return [
@@ -107,24 +113,21 @@ class UserController extends Controller
                 'name' => $subrole->description,
             ];
         });
-        // $subroles = map_options(SubRole::class, 'id', 'description');
-
         if ($userDetails) {
-            return view('pages.hr.users.edit', compact('userDetails', 'roles', 'subroles'));
+            return view('pages.hr.users.edit', compact('userDetails', 'roles', 'subroles','user_stats','current_stat'));
         }
 
         return redirect()->back()->with('error', 'User doesn\'t exist');
     }
 
     public function update(Request $request, $id) {
-
         $user = User::find($id);
-
         $user->update([
             'name' => $request->name,
             'email' => $request->email,
             'role_id' => $request->role,
-            'sub_role' => $request->subrole
+            'sub_role' => $request->subrole,
+            'status' => $request->user_stats
         ]);
 
         return redirect()->back()->with('success', 'User updated successfully');

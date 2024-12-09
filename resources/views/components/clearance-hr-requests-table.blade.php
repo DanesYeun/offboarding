@@ -35,7 +35,7 @@
                             'Disapproved' => 'text-bg-danger',
                         };
 
-                        $isDisabled = $data->status != 1 ? 'disabled' : '';
+                        $isDisabled = $data->status != 1 ? 'style=display:none;' : '';
                     @endphp
                     <tr>
                         <td class="p-3">{{ $data->firstname }} {{ $data->user->name }}</td>

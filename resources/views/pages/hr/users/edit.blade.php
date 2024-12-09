@@ -23,6 +23,7 @@
                     <x-input name="email" label="Email Address" type="text" value="{{ $userDetails->email }}"/>
                     <x-select name="role" label="Role" :options="$roles" required="true" value="{{ $userDetails->role_id }}"/>
                     <x-select name="subrole" label="Sub Role" :options="$subroles" required="true" value="{{ $userDetails->sub_role }}"/>
+                    <x-select name="user_stats" label="Status" :options="$user_stats" required="true" value="{{ $current_stat[0]->id  }}"/>
                     <div class="d-flex justify-content-end">   
                         <a href="{{ route('users.index') }}" class="btn btn-danger mx-2"><i class="bi bi-arrow-left-circle p-2"></i> Back</a>
                         <button type="submit" class="btn btn-success mx-2"><i class="bi bi-person-fill-down p-2"></i> Save Changes</button>

@@ -14,7 +14,7 @@ return new class extends Migration
         Schema::create('comment', function (Blueprint $table) {
             $table->id();
             $table->unsignedBigInteger('clearance_requests_id');
-            $table->string('comment');
+            $table->string('comment')->nullable();
             $table->tinyInteger('clearing_official_id');
             $table->foreign('clearance_requests_id')
             ->references('id')->on('clearance_requests')

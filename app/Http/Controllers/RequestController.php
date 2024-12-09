@@ -76,19 +76,35 @@ class RequestController extends Controller
 
         $user =Auth::user();
         if ($status == 'approved') {
-
-            $clearanceapproval = ClearanceApproval::where('clearing_official_id', $user->sub_role)
-            ->where('request_id',$request_id)
-            ->update(['isApproved' => 1]);
-
             $status_for_hr = ClearanceRequest::where('id',$request_id)->update(['status' => 3]);
-
             if($seqno == $last_seqno){
-                ClearanceRequest::where('id',$request_id)
-                ->update(['status' => 4]);
-                return redirect()->back()->with('success', 'Clearance request successfully approved.');
+                $check = ClearanceApproval::where('isApproved', 0)
+                ->join('users','users.sub_role','=','clearing_official_id')
+                ->where('request_id', $request_id)
+                ->where('status', 4)
+                ->get();
+                if($check->count() > 0){
+                    return redirect()->back()->with('error', 'Waiting on leave clearing official to approved.' );
+                    // dd($check->name );
+                  
+                }else{
+
+                    $clearanceapproval = ClearanceApproval::where('clearing_official_id', $user->sub_role)
+                    ->where('request_id',$request_id)
+                    ->update(['isApproved' => 1]);
+
+                    ClearanceRequest::where('id',$request_id)
+                    ->update(['status' => 4]);
+                    return redirect()->back()->with('success', 'Clearance request successfully approved.');
+                }
+
+            }else{
+                $clearanceapproval = ClearanceApproval::where('clearing_official_id', $user->sub_role)
+                ->where('request_id',$request_id)
+                ->update(['isApproved' => 1]);
+    
             }
-            return redirect()->back()->with('success', 'Clearance request successfully verified.');
+            return redirect()->back()->with('success', 'Clearance request successfully approved.');
         } 
     }
 

@@ -63,4 +63,9 @@ class User extends Authenticatable
     {
         return $this->hasMany(ClearanceRequest::class);
     }
+
+    public function user_stat(){
+        return $this->belongsTo(UserStatus::class, 'status','id');
+    }
+
 }
