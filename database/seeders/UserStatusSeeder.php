@@ -16,6 +16,7 @@ class UserStatusSeeder extends Seeder
             ['description' => 'Active'],
             ['description' => 'Disabled'],
             ['description' => 'New'],
+            ['description' => 'OnLeave'],
         ]);
     }
 }

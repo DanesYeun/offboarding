@@ -17,16 +17,19 @@
                     <th scope="col" class="p-3 bg-primary text-white">Email</th>
                     <th scope="col" class="p-3 bg-primary text-white d-none d-sm-table-cell">Role</th>
                     <th scope="col" class="p-3 bg-primary text-white d-none d-sm-table-cell">Sub Role</th>
+                    <th scope="col" class="p-3 bg-primary text-white d-none d-sm-table-cell">Status</th>
                     <th scope="col" class="p-3 bg-primary text-white">Action</th>
                 </tr>
             </thead>
             <tbody id="tableBody">
                 @foreach($datas as $data)
                     <tr>
+                        {{-- {{dd($data)}} --}}
                         <td class="p-3">{{ $data->name }}</td>
                         <td class="p-3">{{ $data->email }}</td>
                         <td class="p-3 d-none d-sm-table-cell">{{ $data->role->name }}</td>
                         <td class="p-3 d-none d-sm-table-cell">{{ $data->subrole->description ?? '' }}</td>
+                        <td class="p-3 d-none d-sm-table-cell">{{ $data->user_stat->description }}</td>
                         <td class="p-3">
                             <a class="btn btn-sm btn-secondary text-white" href="{{ route('users.details', ['id' => $data->id]) }}">
                                 <i class="bi bi-pencil-square"></i>
@@ -47,6 +50,15 @@
                                     <span class="d-none d-sm-inline">Activate New Account</span>
                                 </button>
                             </form>
+                            @elseif ($data->status == 4)
+                            <form action="{{ route('users.disable', ['id' => $data->id]) }}" method="POST" style="display: inline;">
+                                @csrf
+                                <button type="submit" class="btn btn-sm btn-danger my-2">
+                                    <i class="bi bi-exclamation-circle"></i>
+                                    <span class="d-none d-sm-inline">Disable</span>
+                                </button>
+                            </form>
+                          
                             @endif
                         </td>
                     </tr>

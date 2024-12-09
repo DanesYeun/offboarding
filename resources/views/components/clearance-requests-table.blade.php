@@ -49,7 +49,7 @@
                         <td class="p-3 d-none d-sm-table-cell">{{ $data->comment ?? 'No Comment'}}</td>
                         @endif
                         <td class="p-3">
-                            <small class="badge rounded-pill {{ $statusClass }}">{{ $data->status_description }}</small>
+                            <small class="badge rounded-pill text-bg-warning">Pending</small>
                         </td>
                        
                         <td class="p-3">
@@ -125,7 +125,7 @@
                                         <input type="hidden" name="seqno" value="{{ $data->seqno}}">
                                        
                                         <button type="submit" class="btn btn-sm btn-success my-2" >
-                                            <span class="d-none d-sm-inline">Verify</span>
+                                            <span class="d-none d-sm-inline">Approved</span>
                                         </button>
                                     </form>
 
