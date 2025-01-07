@@ -47,6 +47,82 @@
                                 {{ basename($clearance_request->attachment_file_path) }}
                             </a>
                         </p>
+
+                        @if(!$clearance_request->hr_requirements->isEmpty())
+                        <p>
+                            <strong>Additional HR Requirements:</strong> 
+                            Please download the file(s) below, complete or process the requirements, and then re-upload them once finished.
+                        </p>
+                    
+                        <!-- Row for Download and Upload Section -->
+                        <div class="row mb-4">
+                            <!-- Download Section -->
+                            <div class="col-md-6">
+                                <h5 class="mb-3"><strong>Download Files:</strong></h5>
+                                <div class="file-list">
+                                    @foreach($clearance_request->hr_requirements as $file)
+                                        <div class="card mb-3 shadow-sm">
+                                            <div class="card-body d-flex align-items-center">
+                                                <div class="file-icon me-3">
+                                                    <i class="bi bi-file-earmark-text fs-3 text-primary"></i>
+                                                </div>
+                                                <div class="file-details flex-grow-1">
+                                                    <a href="{{ asset('storage/' . $file->file_path) }}" target="_blank" class="text-decoration-none text-dark fw-bold">
+                                                        {{ $file->file_name }}
+                                                    </a>
+                                                    <p class="mb-0 text-muted small">Click to view or download the file.</p>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    @endforeach
+                                </div>
+                            </div>
+                    
+                            
+                            <!-- Upload Section -->
+                            <div class="col-md-6">
+                                @if($clearance_request->completed_requirements->isEmpty())
+                                    <h5 class="mb-3"><strong>Upload Completed Files:</strong></h5>
+                                    <p>Please upload the completed files below once you have finished filling them out.</p>
+                       
+                                @else
+                                    <h5 class="mb-3"><strong>Completed Files:</strong></h5>
+                                    <div class="file-list">
+                                        @foreach($clearance_request->completed_requirements as $file)
+                                            <div class="card mb-3 shadow-sm">
+                                                <div class="card-body d-flex align-items-center">
+                                                    <div class="file-icon me-3">
+                                                        <i class="bi bi-file-earmark-text fs-3 text-primary"></i>
+                                                    </div>
+                                                    <div class="file-details flex-grow-1">
+                                                        <a href="{{ asset('storage/' . $file->file_path) }}" target="_blank" class="text-decoration-none text-dark fw-bold">
+                                                            {{ $file->file_name }}
+                                                        </a>
+                                                        <p class="mb-0 text-muted small">Click to view or download the file.</p>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        @endforeach
+                                    </div>
+                                @endif
+
+                                <form method="POST" action="{{ route('employee_clearance.requirements', $clearance_request->id) }}" enctype="multipart/form-data">
+                                    @csrf
+                                    <div class="mb-3">
+                                        <input type="file" class="form-control" name="attachments[]" multiple>
+                                    </div>
+                    
+                                    <!-- Upload Button -->
+                                    <button type="submit" class="btn btn-success">
+                                        <i class="bi bi-upload"></i> {{!$clearance_request->completed_requirements->isEmpty() ? 'Re-upload Completed Files' : 'Upload Completed Files'}} 
+                                    </button>
+                                </form>
+                            </div>
+                    
+                        </div>
+                    @endif
+                    
+
                         <p class="m-0">
                             @if ($clearance_request->status == 1)
                                 <span class="badge text-white rounded-pill text-bg-warning px-2">
@@ -60,6 +136,7 @@
                                 </span>
                             @endif     
                         </p>
+                    
                     </div>
                    
                 </div>

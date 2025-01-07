@@ -57,8 +57,14 @@
                                 </small>
                         </td>
                         <td class="p-3">
+                            <!-- View Button -->
                             <button type="button" class="btn btn-sm btn-secondary text-white" data-bs-toggle="modal" data-bs-target="#viewModal{{ $data->id }}">
                                 <i class="bi bi-eye text-primary"></i> 
+                            </button>
+                        
+                            <!-- Upload Attachment Button -->
+                            <button type="button" class="btn btn-sm btn-primary text-white" data-bs-toggle="modal" data-bs-target="#uploadAttachmentModal{{ $data->id }}">
+                                <i class="bi bi-paperclip"></i>
                             </button>
                         </td>
                     </tr>
@@ -93,6 +99,7 @@
                                                 @endif
                                             </div>
                                         </div>
+
                                         <h5>Clearing Officials</h5>
                                         @foreach($data->clearance_approvals as $approver)
                                             <x-input type="text" name="approver" label="" class="form-control" value="{{ $approver->sub_role->description }}" readOnly="true" mdSize="9"/>
@@ -123,6 +130,93 @@
                             </div>
                         </div>
                     </div>
+
+                  <!-- Upload Attachment Modal -->
+                    <div class="modal fade" id="uploadAttachmentModal{{ $data->id }}" tabindex="-1" aria-labelledby="uploadAttachmentModalLabel{{ $data->id }}" aria-hidden="true">
+                        <div class="modal-dialog modal-lg">
+                            <div class="modal-content">
+                                <div class="modal-header">
+                                    <h5 class="modal-title" id="uploadAttachmentModalLabel{{ $data->id }}">Upload Attachments</h5>
+                                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                                </div>
+                                <div class="modal-body">
+                                    <!-- Existing Uploaded Files -->
+                                    <div>
+                                        <h6>Existing Attachments:</h6>
+                                        <ul>
+                                            @if(!$data->hr_requirements->isEmpty())
+                                                <div class="file-list">
+                                                    @foreach($data->hr_requirements as $file)
+                                                        <div class="card mb-3 shadow-sm">
+                                                            <div class="card-body d-flex align-items-center">
+                                                                <div class="file-icon me-3">
+                                                                    <i class="bi bi-file-earmark-text fs-3 text-primary"></i>
+                                                                </div>
+                                                                <div class="file-details flex-grow-1">
+                                                                    <a href="{{ asset('storage/' . $file->file_path) }}" target="_blank" class="text-decoration-none text-dark fw-bold">
+                                                                        {{ $file->file_name }}
+                                                                    </a>
+                                                                    <p class="mb-0 text-muted small">Click to view or download</p>
+                                                                </div>
+                                                            </div>
+                                                        </div>
+                                                    @endforeach
+                                                </div>
+                                            @else
+                                                <p>No files uploaded yet.</p>
+                                            @endif
+                                        </ul>
+                                    </div>
+
+                                    <!-- Upload New Files -->
+                                    <form method="POST" action="{{ route('clearance_request.requirements', $data->id) }}" enctype="multipart/form-data" id="uploadAttachmentForm{{ $data->id }}">
+                                        @csrf
+                                        <div id="file-inputs-container-{{ $data->id }}">
+                                            <!-- Initial file input -->
+                                            <div class="mb-3">
+                                                <input type="file" class="form-control requirements" name="attachments[]" multiple>
+                                            </div>
+                                        </div>
+                                        <div class="d-flex justify-content-end mt-3">
+                                            <button type="submit" class="btn btn-success">
+                                                <i class="bi bi-upload"></i>  {{(!$data->hr_requirements->isEmpty()) ? 'Re-upload' : 'Upload'}}
+                                            </button>
+                                        </div>
+                                    </form>
+
+                                     <!-- Employee Uploaded Files -->
+                                     @if(!$data->completed_requirements->isEmpty())
+                                        <div>
+                                            <h6>Employee Uploaded Attachments:</h6>
+                                            <ul>
+                                                <div class="file-list">
+                                                    @foreach($data->completed_requirements as $file)
+                                                        <div class="card mb-3 shadow-sm">
+                                                            <div class="card-body d-flex align-items-center">
+                                                                <div class="file-icon me-3">
+                                                                    <i class="bi bi-file-earmark-text fs-3 text-primary"></i>
+                                                                </div>
+                                                                <div class="file-details flex-grow-1">
+                                                                    <a href="{{ asset('storage/' . $file->file_path) }}" target="_blank" class="text-decoration-none text-dark fw-bold">
+                                                                        {{ $file->file_name }}
+                                                                    </a>
+                                                                    <p class="mb-0 text-muted small">Click to view or download</p>
+                                                                </div>
+                                                            </div>
+                                                        </div>
+                                                    @endforeach
+                                                </div>
+                                            </ul>
+                                        </div>
+                                    @endif
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+
+
+
                 @endforeach
             </tbody>
         </table>

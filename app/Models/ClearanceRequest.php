@@ -42,4 +42,11 @@ class ClearanceRequest extends Model
     {
         return $this->hasMany(Response::class);
     }
+    public function hr_requirements(){
+        return $this->hasMany(ClearanceHrRequirement::class, 'clearance_request_id', 'id');
+    }
+
+    public function completed_requirements(){
+        return $this->hasMany(ClearanceCompletedRequirements::class, 'clearance_request_id', 'id');
+    }
 }

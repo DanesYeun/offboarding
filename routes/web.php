@@ -56,6 +56,7 @@ Route::middleware('auth')->group(function () {
     // Requests Management
     Route::get('requests', [RequestController::class, 'index'])->name('clearance_request.index');
     Route::post('request-status/{id}', [RequestController::class, 'update_status'])->name('request.status');
+    Route::post('upload-hr-requirements/{id}', [RequestController::class, 'upload_hr_requirments'])->name('clearance_request.requirements');
 
     // Profile Routes
     Route::get('profile', [ProfileController::class, 'index'])->name('profile.index');
@@ -64,6 +65,7 @@ Route::middleware('auth')->group(function () {
     // Employee Clearance
     Route::get('clearance', [EmployeeRequestClearanceController::class, 'index'])->name('employee_clearance.index');
     Route::post('sumbit-request', [EmployeeRequestClearanceController::class, 'store'])->name('employee_clearance.store');
+    Route::post('upload-completed-requirements/{id}', [EmployeeRequestClearanceController::class, 'upload_requirements'])->name('employee_clearance.requirements');
 
     // Employee COE
     Route::get('COE', [EmployeeCOEController::class, 'index'])->name('employee_coe.index');

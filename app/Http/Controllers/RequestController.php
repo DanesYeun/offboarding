@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use App\Models\Clearance;
 use App\Models\ClearanceApproval;
+use App\Models\ClearanceHrRequirement;
 use Illuminate\Http\Request;
 use App\Models\ClearanceRequest;
 use Barryvdh\DomPDF\Facade\Pdf;
@@ -16,10 +17,9 @@ class RequestController extends Controller
 {
     public function index(){
 
-        $requests = ClearanceRequest::with(['user','clearance_purpose', 'statusDesc', 'clearance.employment_type_desc', 'clearance_approvals','clearance_approvals.sub_role'])->orderBy('status', 'ASC')->orderBy('created_at', 'DESC')->get();
+        $requests = ClearanceRequest::with(['user','clearance_purpose', 'statusDesc', 'clearance.employment_type_desc', 'clearance_approvals','clearance_approvals.sub_role', 'hr_requirements', 'completed_requirements'])->orderBy('status', 'ASC')->orderBy('created_at', 'DESC')->get();
        
-       
-        // dd(json_decode($requests));
+        // dd(json_decode($requests));  
         return view('pages.hr.clearance.requests.index', compact('requests'));
     }
 
@@ -108,7 +108,6 @@ class RequestController extends Controller
         } 
     }
 
-
     public function certificate_of_employment(){
         
         $requests = ClearanceRequest::with(['user'])->where('status', 5)->whereNull('generated_coe_path')->get();
@@ -144,6 +143,54 @@ class RequestController extends Controller
 
         // Stream the PDF to the browser
         return $pdf->stream($fileName);
+    }
+
+    public function upload_hr_requirments(Request $request, $id){
+
+        // dd($request->file('attachments'));
+        // Validate the attachments
+        $request->validate([
+            'attachments.*' => 'file|mimes:doc,docx|max:2048', 
+        ]);
+
+        $requests = ClearanceHrRequirement::where('clearance_request_id', $id)->get();
+
+         // Check if there are existing files and delete them
+        if (!$requests->isEmpty()) {
+            foreach ($requests as $existingFile) {
+                
+                Storage::delete($existingFile->file_path);
+                $existingFile->delete();
+            }
+        }
+
+        $uploadedFiles = [];
+        if ($request->hasFile('attachments')) {
+            foreach ($request->file('attachments') as $file) {
+
+                $fileName = $file->getClientOriginalName();
+
+                // Store the file in the 'requirements' directory in the 'public' disk
+                $filePath = $file->storeAs('requirements', $fileName, 'public');
+
+                // Add the file path to the uploaded files array
+                $uploadedFiles[] = [
+                    'file_name' => $fileName,
+                    'file_path' => $filePath,
+                ];
+            }
+        }
+
+        // Store the paths in the database or handle the data as needed
+        foreach ($uploadedFiles as $uploadedFile) {
+            ClearanceHrRequirement::create([
+                'clearance_request_id' => $id,
+                'file_name' => $uploadedFile['file_name'],
+                'file_path' => $uploadedFile['file_path'],
+            ]);
+        }
+
+        return redirect()->back()->with('success', 'Files uploaded successfully.');
     }
 
     private function deparments(){
