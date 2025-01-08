@@ -85,9 +85,11 @@ Route::middleware('auth')->group(function () {
     Route::post('question-store', [QuestionnaireController::class, 'store'])->name('hr_questionnaire.store');
     Route::post('questions/{id}', [QuestionnaireController::class, 'update'])->name('hr_questionnaire.update');
     Route::post('questions/{id}', [QuestionnaireController::class, 'delete'])->name('hr_questionnaire.delete');
+
     // generate COE
     Route::get('certificate-of-employment',[RequestController::class, 'certificate_of_employment'])->name('request.coe');
     Route::post('generate-certificate-of-employment/{id}',[RequestController::class, 'generate_certificate_of_employment'])->name('request.generate.coe');
+    Route::post('upload-certificate-of-employment',[RequestController::class, 'upload_certificate_of_employment'])->name('request.upload.coe');
 
     Route::get('qna', [EmployeeQuestionnareController::class, 'index'])->name('employee_clearance.questionnaire.index');
     Route::post('qna-store/{id}', [EmployeeQuestionnareController::class, 'store'])->name('employee_clearance.questionnaire.store');

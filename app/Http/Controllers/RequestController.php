@@ -145,6 +145,25 @@ class RequestController extends Controller
         return $pdf->stream($fileName);
     }
 
+    public function upload_certificate_of_employment (Request $request)
+    {
+        $request->validate([
+            'request_id' => 'required|exists:clearance_requests,id',
+            'coe_file' => 'required|file|mimes:pdf,doc,docx|max:2048',
+        ]);
+    
+        $clearanceRequest = ClearanceRequest::with(['user'])->findOrFail($request->request_id);
+     
+        if ($request->hasFile('coe_file')) {
+            $fileName = 'coe_' . $request->employee_id . '_' . time() . '.' . $request->file('coe_file')->getClientOriginalExtension();
+            $filePath = $request->file('coe_file')->storeAs('coe', $fileName, 'public');
+
+            $clearanceRequest->update(['generated_coe_path' => $filePath]);
+        }
+    
+        return redirect()->back()->with('success', 'Certificate uploaded successfully!');
+    }
+
     public function upload_hr_requirments(Request $request, $id){
 
         // dd($request->file('attachments'));
